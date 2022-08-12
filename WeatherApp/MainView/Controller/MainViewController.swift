@@ -34,7 +34,7 @@ class MainViewController: UIViewController, UICollectionViewDelegate, UICollecti
         setupView()
         
         locationManager.delegate = self
-        locationManager.desiredAccuracy = kCLLocationAccuracyBest
+        locationManager.desiredAccuracy = kCLLocationAccuracyKilometer
         locationManager.requestWhenInUseAuthorization()
         locationManager.startUpdatingLocation()
     }
@@ -70,7 +70,6 @@ class MainViewController: UIViewController, UICollectionViewDelegate, UICollecti
     
     func loadDataUsingCoordinates(lat: String, lon: String) {
         networkManager.fetchCurrentLocationWeather(lat: lat, lon: lon) { (weather) in
-//             print("Current Temperature", weather.main.temp.kelvinToCeliusConverter())
              let formatter = DateFormatter()
              formatter.dateFormat = "dd MMM yyyy" //yyyy
              let stringDate = formatter.string(from: Date(timeIntervalSince1970: TimeInterval(weather.dt)))
