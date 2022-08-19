@@ -9,7 +9,7 @@ import UIKit
 import CoreLocation
 
 class MainViewController: UIViewController, UICollectionViewDelegate, UICollectionViewDataSource, CLLocationManagerDelegate {
-
+    
     @IBOutlet weak var locationLabel: UILabel!
     @IBOutlet weak var containerView: UIView!
     @IBOutlet weak var mainImageView: UIImageView!
@@ -27,9 +27,10 @@ class MainViewController: UIViewController, UICollectionViewDelegate, UICollecti
     
     var locationManager = CLLocationManager()
     var currentLoc: CLLocation?
-    var stackView : UIStackView!
     var latitude : CLLocationDegrees!
     var longitude: CLLocationDegrees!
+    
+    var forecastData: [ForecastTemperature] = []
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -41,7 +42,7 @@ class MainViewController: UIViewController, UICollectionViewDelegate, UICollecti
         locationManager.requestWhenInUseAuthorization()
         locationManager.startUpdatingLocation()
     }
-
+    
     func locationManager(_ manager: CLLocationManager, didUpdateLocations locations: [CLLocation]) {
         manager.stopUpdatingLocation()
         manager.delegate = nil
@@ -61,15 +62,15 @@ class MainViewController: UIViewController, UICollectionViewDelegate, UICollecti
     
     func loadData(city: String) {
         networkManager.fetchCurrentWeather(city: city) { (weather) in
-             DispatchQueue.main.async {
-                 self.setLabels(weather: weather)
-             }
-         }
+            DispatchQueue.main.async {
+                self.setLabels(weather: weather)
+            }
+        }
     }
     
     func setLabels(weather: Weather) {
         let formatter = DateFormatter()
-        formatter.dateFormat = "dd MMM yyyy" //yyyy
+        formatter.dateFormat = "dd MMM yyyy"
         let stringDate = formatter.string(from: Date(timeIntervalSince1970: TimeInterval(weather.dt ?? 0)))
         
         temperatureLabel.text = (weather.main?.temp?.kelvinToCeliusConverter())! + "º"
@@ -84,60 +85,55 @@ class MainViewController: UIViewController, UICollectionViewDelegate, UICollecti
         UserDefaults.standard.set("\(weather.name ?? "")", forKey: "SelectedCity")
     }
     
-    @objc func handleAddPlaceButton() {
-        let alertController = UIAlertController(title: "Add City", message: "", preferredStyle: .alert)
-         alertController.addTextField { (textField : UITextField!) -> Void in
-             textField.placeholder = "City Name"
-         }
-         let saveAction = UIAlertAction(title: "Add", style: .default, handler: { alert -> Void in
-             let firstTextField = alertController.textFields![0] as UITextField
-//             print("City Name: \(firstTextField.text ?? "Empty")")
-            guard let cityname = firstTextField.text else { return }
-            self.loadData(city: cityname)
-         })
-         let cancelAction = UIAlertAction(title: "Cancel", style: .destructive, handler: { (action : UIAlertAction!) -> Void in
-            print("Cancel")
-         })
-
-         alertController.addAction(saveAction)
-         alertController.addAction(cancelAction)
-
-         self.present(alertController, animated: true, completion: nil)
-    }
-
-//    @objc func handleShowForecast() {
-//        self.navigationController?.pushViewController(ForecastViewController(), animated: true)
-//    }
+    //    @objc func handleShowForecast() {
+    //        self.navigationController?.pushViewController(ForecastViewController(), animated: true)
+    //    }
     
     @IBAction func refreshButtonTapped(_ sender: Any) {
         let city = UserDefaults.standard.string(forKey: "SelectedCity") ?? ""
         loadData(city: city)
+//        networkManager.fetchNextFiveWeatherForecast(city: city) { (forecast) in
+//            self.forecastData = forecast
+//            print("Total Count:", forecast.count)
+//            DispatchQueue.main.async {
+//                self.collectionView.reloadData()
+//            }
+//        }
     }
     
     @IBAction func addCityButtonPressed(_ sender: Any) {
         let alertController = UIAlertController(title: "Add City", message: "", preferredStyle: .alert)
-         alertController.addTextField { (textField : UITextField!) -> Void in
-             textField.placeholder = "City Name"
-         }
-         let saveAction = UIAlertAction(title: "Add", style: .default, handler: { alert -> Void in
-             let firstTextField = alertController.textFields![0] as UITextField
-//             print("City Name: \(firstTextField.text ?? "Empty")")
+        alertController.addTextField { (textField : UITextField!) -> Void in
+            textField.placeholder = "City Name"
+        }
+        let saveAction = UIAlertAction(title: "Add", style: .default, handler: { alert -> Void in
+            let firstTextField = alertController.textFields![0] as UITextField
             guard let cityname = firstTextField.text else { return }
             self.loadData(city: cityname)
-         })
-         let cancelAction = UIAlertAction(title: "Cancel", style: .destructive, handler: { (action : UIAlertAction!) -> Void in
+        })
+        let cancelAction = UIAlertAction(title: "Cancel", style: .destructive, handler: { (action : UIAlertAction!) -> Void in
             print("Cancel")
-         })
-
-         alertController.addAction(saveAction)
-         alertController.addAction(cancelAction)
-
-         self.present(alertController, animated: true, completion: nil)
+        })
+        
+        alertController.addAction(saveAction)
+        alertController.addAction(cancelAction)
+        
+        self.present(alertController, animated: true, completion: nil)
     }
     
 }
 
 extension MainViewController {
+    
+    func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
+        return 5
+    }
+    
+    func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
+        let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "Cell", for: indexPath) as! MainCell
+        return cell
+    }
+    
     func setupView() {
         containerView.layer.borderWidth = 2
         containerView.layer.borderColor = UIColor(red: 1, green: 1, blue: 1, alpha: 0.3).cgColor
@@ -148,15 +144,6 @@ extension MainViewController {
         addCityButton.layer.borderWidth = 2
         addCityButton.layer.borderColor = UIColor(red: 1, green: 1, blue: 1, alpha: 0.3).cgColor
         addCityButton.layer.cornerRadius = 15
-    }
-    
-    func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
-        return 5
-    }
-    
-    func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
-        let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "Cell", for: indexPath) as! MainCell
-        return cell
     }
 }
 

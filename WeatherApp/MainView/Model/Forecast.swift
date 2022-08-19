@@ -9,38 +9,42 @@ import Foundation
 
 // MARK: - Forecast
 struct Forecast: Codable {
-    let cod: String?
-    let message, cnt: Int?
+//    let cod: String?
+//    let message, cnt: Int?
     let list: [List]?
-    let city: City?
+//    let city: City?
 }
 
-// MARK: - City
-struct City: Codable {
-    let id: Int?
-    let name: String?
-    let coord: Coord?
-    let country: String?
-    let population, timezone, sunrise, sunset: Int?
-}
+//// MARK: - City
+//struct City: Codable {
+//    let id: Int?
+//    let name: String?
+//    let coord: Coord?
+//    let country: String?
+//    let population, timezone, sunrise, sunset: Int?
+//}
 
 // MARK: - List
 struct List: Codable {
-    let dt: Int?
+//    let dt: Int?
     let main: MainClass?
     let weather: [ForecastWeather]?
-    let clouds: Clouds?
-    let wind: Wind?
-    let visibility, pop: Int?
-    let sys: Sys?
+//    let clouds: Clouds?
+//    let wind: Wind?
+//    let visibility, pop: Int?
+//    let sys: Sys?
     let dtTxt: String?
 }
 
 // MARK: - MainClass
 struct MainClass: Codable {
-    let temp, feelsLike, tempMin, tempMax: Double?
+    let temp, feels_like, temp_min, temp_max: Double?
     let pressure, seaLevel, grndLevel, humidity: Int?
     let tempKf: Double?
+    
+//    private enum CodingKeys : String, CodingKey {
+//            case pressure, seaLevel, grndLevel, humidity, tempKf, temp, feelsLike = "feels_like", tempMin = "temp_min", tempMax = "temp_max"
+//        }
 }
 
 enum Pod: Codable {

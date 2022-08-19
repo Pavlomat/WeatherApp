@@ -91,8 +91,8 @@ class WeatherNetworkManager : NetworkManagerProtocol {
                             
                         let listIndex = day//(8 * day) - 1
                          let mainTemp = forecastWeather.list?[listIndex].main?.temp
-                         let minTemp = forecastWeather.list?[listIndex].main?.tempMin
-                         let maxTemp = forecastWeather.list?[listIndex].main?.tempMax
+                         let minTemp = forecastWeather.list?[listIndex].main?.temp_min
+                         let maxTemp = forecastWeather.list?[listIndex].main?.temp_max
                          let descriptionTemp = forecastWeather.list?[listIndex].weather?[0].weatherDescription
                          let icon = forecastWeather.list?[listIndex].weather?[0].icon
                          let time = forecastWeather.list?[listIndex].dtTxt
