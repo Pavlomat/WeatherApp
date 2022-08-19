@@ -21,7 +21,6 @@ class WeatherNetworkManager : NetworkManagerProtocol {
                  do {
                      let currentWeather = try JSONDecoder().decode(Weather.self, from: data)
                     completion(currentWeather)
-                     print("\(lat) + \(lon)")
                  } catch {
                      print(error)
                  }
@@ -69,7 +68,7 @@ class WeatherNetworkManager : NetworkManagerProtocol {
              }
              let urlRequest = URLRequest(url: url)
              URLSession.shared.dataTask(with: urlRequest) { [weak self] (data, response, error) in
-                guard let strongSelf = self else { return }
+                 guard self != nil else { return }
                  guard let data = data else { return }
                  do {
                     

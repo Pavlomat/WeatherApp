@@ -19,6 +19,9 @@ class MainViewController: UIViewController, UICollectionViewDelegate, UICollecti
     @IBOutlet weak var humidityLabel: UILabel!
     @IBOutlet weak var perceivedLabel: UILabel!
     @IBOutlet weak var windLabel: UILabel!
+    @IBOutlet weak var conditionsLabel: UILabel!
+    @IBOutlet weak var refreshButton: UIButton!
+    @IBOutlet weak var addCityButton: UIButton!
     
     let networkManager = WeatherNetworkManager()
     
@@ -50,40 +53,35 @@ class MainViewController: UIViewController, UICollectionViewDelegate, UICollecti
     
     func loadDataUsingCoordinates(lat: String, lon: String) {
         networkManager.fetchCurrentLocationWeather(lat: lat, lon: lon) { (weather) in
-             let formatter = DateFormatter()
-             formatter.dateFormat = "dd MMM yyyy" //yyyy
-            let stringDate = formatter.string(from: Date(timeIntervalSince1970: TimeInterval(weather.dt ?? 0)))
-             
-             DispatchQueue.main.async {
-                 self.temperatureLabel.text = (weather.main?.temp?.kelvinToCeliusConverter())! + "º"
-                 self.locationLabel.text = "\(weather.name ?? "") , \(weather.sys?.country ?? "")"
-                 self.dateLabel.text = stringDate
-                 print("\(weather.main)")
-                 self.perceivedLabel.text = "\(String(describing: weather.main?.feelsLike))" + "º"
-//                 self.minTemp.text = ("Min: " + String(weather.main.temp_min.kelvinToCeliusConverter()) + "°C" )
-//                 self.maxTemp.text = ("Max: " + String(weather.main.temp_max.kelvinToCeliusConverter()) + "°C" )
-                 if let iconUrl = weather.weather?[0].icon {
-                     self.mainImageView.loadImageFromURL(url: "https://openweathermap.org/img/wn/\(iconUrl)@2x.png") }
-                UserDefaults.standard.set("\(weather.name ?? "")", forKey: "SelectedCity")
-             }
+            DispatchQueue.main.async {
+                self.setLabels(weather: weather)
+            }
         }
     }
     
     func loadData(city: String) {
         networkManager.fetchCurrentWeather(city: city) { (weather) in
-             let formatter = DateFormatter()
-             formatter.dateFormat = "dd MMM yyyy" //yyyy
-            let stringDate = formatter.string(from: Date(timeIntervalSince1970: TimeInterval(weather.dt ?? 0)))
-             
              DispatchQueue.main.async {
-                 self.temperatureLabel.text = (weather.main?.temp?.kelvinToCeliusConverter())! + "º"
-                 self.locationLabel.text = "\(weather.name ?? "") , \(weather.sys?.country ?? "")"
-                 self.dateLabel.text = stringDate
-                 if let iconUrl = weather.weather?[0].icon {
-                     self.mainImageView.loadImageFromURL(url: "https://openweathermap.org/img/wn/\(iconUrl)@2x.png") }
-                 UserDefaults.standard.set("\(weather.name ?? "")", forKey: "SelectedCity")
+                 self.setLabels(weather: weather)
              }
          }
+    }
+    
+    func setLabels(weather: Weather) {
+        let formatter = DateFormatter()
+        formatter.dateFormat = "dd MMM yyyy" //yyyy
+        let stringDate = formatter.string(from: Date(timeIntervalSince1970: TimeInterval(weather.dt ?? 0)))
+        
+        temperatureLabel.text = (weather.main?.temp?.kelvinToCeliusConverter())! + "º"
+        locationLabel.text = "\(weather.name ?? "") , \(weather.sys?.country ?? "")"
+        dateLabel.text = stringDate
+        perceivedLabel.text = "\(weather.main?.feelsLike?.kelvinToCeliusConverter() ?? "")" + "º"
+        windLabel.text = "\(weather.wind?.speed?.cutFractional() ?? "")" + " km/h"
+        humidityLabel.text = "\(weather.main?.humidity ?? 0)" + " %"
+        conditionsLabel.text = "\(weather.weather?[0].main ?? "")"
+        if let iconUrl = weather.weather?[0].icon {
+            mainImageView.loadImageFromURL(url: "https://openweathermap.org/img/wn/\(iconUrl)@2x.png") }
+        UserDefaults.standard.set("\(weather.name ?? "")", forKey: "SelectedCity")
     }
     
     @objc func handleAddPlaceButton() {
@@ -100,21 +98,43 @@ class MainViewController: UIViewController, UICollectionViewDelegate, UICollecti
          let cancelAction = UIAlertAction(title: "Cancel", style: .destructive, handler: { (action : UIAlertAction!) -> Void in
             print("Cancel")
          })
-    
+
          alertController.addAction(saveAction)
          alertController.addAction(cancelAction)
 
          self.present(alertController, animated: true, completion: nil)
     }
 
-    @objc func handleShowForecast() {
-        self.navigationController?.pushViewController(ForecastViewController(), animated: true)
-    }
+//    @objc func handleShowForecast() {
+//        self.navigationController?.pushViewController(ForecastViewController(), animated: true)
+//    }
     
-    @objc func handleRefresh() {
+    @IBAction func refreshButtonTapped(_ sender: Any) {
         let city = UserDefaults.standard.string(forKey: "SelectedCity") ?? ""
         loadData(city: city)
     }
+    
+    @IBAction func addCityButtonPressed(_ sender: Any) {
+        let alertController = UIAlertController(title: "Add City", message: "", preferredStyle: .alert)
+         alertController.addTextField { (textField : UITextField!) -> Void in
+             textField.placeholder = "City Name"
+         }
+         let saveAction = UIAlertAction(title: "Add", style: .default, handler: { alert -> Void in
+             let firstTextField = alertController.textFields![0] as UITextField
+//             print("City Name: \(firstTextField.text ?? "Empty")")
+            guard let cityname = firstTextField.text else { return }
+            self.loadData(city: cityname)
+         })
+         let cancelAction = UIAlertAction(title: "Cancel", style: .destructive, handler: { (action : UIAlertAction!) -> Void in
+            print("Cancel")
+         })
+
+         alertController.addAction(saveAction)
+         alertController.addAction(cancelAction)
+
+         self.present(alertController, animated: true, completion: nil)
+    }
+    
 }
 
 extension MainViewController {
@@ -122,6 +142,12 @@ extension MainViewController {
         containerView.layer.borderWidth = 2
         containerView.layer.borderColor = UIColor(red: 1, green: 1, blue: 1, alpha: 0.3).cgColor
         containerView.layer.cornerRadius = 15
+        refreshButton.layer.borderWidth = 2
+        refreshButton.layer.borderColor = UIColor(red: 1, green: 1, blue: 1, alpha: 0.3).cgColor
+        refreshButton.layer.cornerRadius = 15
+        addCityButton.layer.borderWidth = 2
+        addCityButton.layer.borderColor = UIColor(red: 1, green: 1, blue: 1, alpha: 0.3).cgColor
+        addCityButton.layer.cornerRadius = 15
     }
     
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {

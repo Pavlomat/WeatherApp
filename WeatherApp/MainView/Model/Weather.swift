@@ -36,6 +36,10 @@ struct Coord: Codable {
 struct Main: Codable {
     let temp, feelsLike, tempMin, tempMax: Double?
     let pressure, humidity: Int?
+    
+    private enum CodingKeys : String, CodingKey {
+            case temp, feelsLike = "feels_like", tempMin = "temp_min", tempMax = "temp_max", pressure, humidity
+        }
 }
 
 // MARK: - Sys
