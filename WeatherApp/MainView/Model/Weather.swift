@@ -8,44 +8,53 @@
 import Foundation
 
 struct Weather: Codable {
-    let id: Int
-    let main: String
-    let description: String
-    let icon: String
+    let coord: Coord?
+    let weather: [WeatherElement]?
+    let base: String?
+    let main: Main?
+    let visibility: Int?
+    let wind: Wind?
+    let clouds: Clouds?
+    let dt: Int?
+    let sys: Sys?
+    let timezone, id: Int?
+    let name: String?
+    let cod: Int?
 }
 
+// MARK: - Clouds
+struct Clouds: Codable {
+    let all: Int?
+}
+
+// MARK: - Coord
+struct Coord: Codable {
+    let lon, lat: Double?
+}
+
+// MARK: - Main
 struct Main: Codable {
-    let temp: Float
-    let feels_like: Float
-    let temp_min: Float
-    let temp_max: Float
-    let pressure: Float
-    let humidity: Float
+    let temp, feelsLike, tempMin, tempMax: Double?
+    let pressure, humidity: Int?
 }
 
+// MARK: - Sys
 struct Sys: Codable {
+    let type, id: Int?
     let country: String?
-    let sunrise: Int?
-    let sunset: Int?
+    let sunrise, sunset: Int?
 }
 
-struct WeatherModel: Codable {
-    let weather: [Weather]
-    let main: Main
-    let sys: Sys
-    let name: String?
-    let dt: Int
-    let timezone: Int?
-    let dt_txt: String?
+// MARK: - WeatherElement
+struct WeatherElement: Codable {
+    let id: Int?
+    let main, weatherDescription, icon: String?
 }
 
-struct ForecastModel: Codable {
-    var list: [WeatherModel]
-    let city: City
+// MARK: - Wind
+struct Wind: Codable {
+    let speed: Double?
+    let deg: Int?
+    let gust: Double?
 }
 
-struct City: Codable {
-    let name: String?
-    let country: String?
-    
-}

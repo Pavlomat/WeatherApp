@@ -8,7 +8,7 @@
 import Foundation
 
 protocol NetworkManagerProtocol {
-    func fetchCurrentWeather(city: String, completion: @escaping (WeatherModel) -> ())
-    func fetchCurrentLocationWeather(lat: String, lon: String, completion: @escaping (WeatherModel) -> ())
+    func fetchCurrentWeather(city: String, completion: @escaping (Weather) -> ())
+    func fetchCurrentLocationWeather(lat: String, lon: String, completion: @escaping (Weather) -> ())
     func fetchNextFiveWeatherForecast(city: String, completion: @escaping ([ForecastTemperature]) -> ())
 }

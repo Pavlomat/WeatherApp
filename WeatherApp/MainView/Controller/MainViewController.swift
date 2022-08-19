@@ -48,43 +48,42 @@ class MainViewController: UIViewController, UICollectionViewDelegate, UICollecti
         loadDataUsingCoordinates(lat: latitude.description, lon: longitude.description)
     }
     
+    func loadDataUsingCoordinates(lat: String, lon: String) {
+        networkManager.fetchCurrentLocationWeather(lat: lat, lon: lon) { (weather) in
+             let formatter = DateFormatter()
+             formatter.dateFormat = "dd MMM yyyy" //yyyy
+            let stringDate = formatter.string(from: Date(timeIntervalSince1970: TimeInterval(weather.dt ?? 0)))
+             
+             DispatchQueue.main.async {
+                 self.temperatureLabel.text = (weather.main?.temp?.kelvinToCeliusConverter())! + "º"
+                 self.locationLabel.text = "\(weather.name ?? "") , \(weather.sys?.country ?? "")"
+                 self.dateLabel.text = stringDate
+                 print("\(weather.main)")
+                 self.perceivedLabel.text = "\(String(describing: weather.main?.feelsLike))" + "º"
+//                 self.minTemp.text = ("Min: " + String(weather.main.temp_min.kelvinToCeliusConverter()) + "°C" )
+//                 self.maxTemp.text = ("Max: " + String(weather.main.temp_max.kelvinToCeliusConverter()) + "°C" )
+                 if let iconUrl = weather.weather?[0].icon {
+                     self.mainImageView.loadImageFromURL(url: "https://openweathermap.org/img/wn/\(iconUrl)@2x.png") }
+                UserDefaults.standard.set("\(weather.name ?? "")", forKey: "SelectedCity")
+             }
+        }
+    }
     
     func loadData(city: String) {
         networkManager.fetchCurrentWeather(city: city) { (weather) in
              let formatter = DateFormatter()
              formatter.dateFormat = "dd MMM yyyy" //yyyy
-             let stringDate = formatter.string(from: Date(timeIntervalSince1970: TimeInterval(weather.dt)))
+            let stringDate = formatter.string(from: Date(timeIntervalSince1970: TimeInterval(weather.dt ?? 0)))
              
              DispatchQueue.main.async {
-                 self.temperatureLabel.text = (String(weather.main.temp.kelvinToCeliusConverter()) + "°")
-                 self.perceivedLabel.text = (String(weather.main.feels_like.kelvinToCeliusConverter()) + "º")
-                 self.locationLabel.text = "\(weather.name ?? "") , \(weather.sys.country ?? "")"
+                 self.temperatureLabel.text = (weather.main?.temp?.kelvinToCeliusConverter())! + "º"
+                 self.locationLabel.text = "\(weather.name ?? "") , \(weather.sys?.country ?? "")"
                  self.dateLabel.text = stringDate
-//                 self.minTemp.text = ("Min: " + String(weather.main.temp_min.kelvinToCeliusConverter()) + "°C" )
-//                 self.maxTemp.text = ("Max: " + String(weather.main.temp_max.kelvinToCeliusConverter()) + "°C" )
-                 self.mainImageView.loadImageFromURL(url: "https://openweathermap.org/img/wn/\(weather.weather[0].icon)@2x.png")
+                 if let iconUrl = weather.weather?[0].icon {
+                     self.mainImageView.loadImageFromURL(url: "https://openweathermap.org/img/wn/\(iconUrl)@2x.png") }
                  UserDefaults.standard.set("\(weather.name ?? "")", forKey: "SelectedCity")
              }
          }
-    }
-    
-    func loadDataUsingCoordinates(lat: String, lon: String) {
-        networkManager.fetchCurrentLocationWeather(lat: lat, lon: lon) { (weather) in
-             let formatter = DateFormatter()
-             formatter.dateFormat = "dd MMM yyyy" //yyyy
-             let stringDate = formatter.string(from: Date(timeIntervalSince1970: TimeInterval(weather.dt)))
-             
-             DispatchQueue.main.async {
-                 self.temperatureLabel.text = (String(weather.main.temp.kelvinToCeliusConverter()) + "°C")
-                 self.locationLabel.text = "\(weather.name ?? "") , \(weather.sys.country ?? "")"
-//                 self.tempDescription.text = weather.weather[0].description
-                 self.dateLabel.text = stringDate
-//                 self.minTemp.text = ("Min: " + String(weather.main.temp_min.kelvinToCeliusConverter()) + "°C" )
-//                 self.maxTemp.text = ("Max: " + String(weather.main.temp_max.kelvinToCeliusConverter()) + "°C" )
-                 self.mainImageView.loadImageFromURL(url: "https://openweathermap.org/img/wn/\(weather.weather[0].icon)@2x.png")
-                UserDefaults.standard.set("\(weather.name ?? "")", forKey: "SelectedCity")
-             }
-        }
     }
     
     @objc func handleAddPlaceButton() {
