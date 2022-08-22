@@ -38,3 +38,11 @@ extension Date {
         return dateFormatter.string(from: self).capitalized
     }
 }
+
+extension String {
+    func correctTime() -> String {
+        let firstIndex = self.index(self.endIndex, offsetBy: -8)
+        let lastIndex = self.index(self.endIndex, offsetBy: -3)
+        return String(self[firstIndex..<lastIndex])
+    }
+}

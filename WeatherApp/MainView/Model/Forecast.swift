@@ -50,66 +50,89 @@ struct List: Codable {
     let weather: [WeatherForecast]?
     let clouds: CloudsForecast?
     let wind: WindForecast?
-    let visibility, pop: Int?
+    let visibility: Int?
+    let pop: Double?
     let sys: SysForecast?
     let dtTxt: String?
+    let rain: Rain?
+
+    enum CodingKeys: String, CodingKey {
+        case dt, main, weather, clouds, wind, visibility, pop, sys
+        case dtTxt = "dt_txt"
+        case rain
+    }
 }
 
-// MARK: - Clouds
 struct CloudsForecast: Codable {
     let all: Int?
 }
 
-// MARK: - MainClass
 struct MainClass: Codable {
     let temp, feelsLike, tempMin, tempMax: Double?
     let pressure, seaLevel, grndLevel, humidity: Int?
     let tempKf: Double?
+
+    enum CodingKeys: String, CodingKey {
+        case temp
+        case feelsLike = "feels_like"
+        case tempMin = "temp_min"
+        case tempMax = "temp_max"
+        case pressure
+        case seaLevel = "sea_level"
+        case grndLevel = "grnd_level"
+        case humidity
+        case tempKf = "temp_kf"
+    }
 }
 
-// MARK: - Sys
+struct Rain: Codable {
+    let the3H: Double?
+
+    enum CodingKeys: String, CodingKey {
+        case the3H = "3h"
+    }
+}
+
 struct SysForecast: Codable {
     let pod: Pod?
 }
 
-enum Pod: Codable {
-    case d
-    case n
+enum Pod: String, Codable {
+    case d = "d"
+    case n = "n"
 }
 
-enum Icon: Codable {
-    case the02D
-    case the02N
-    case the03D
-    case the03N
-    case the04D
-    case the04N
-}
-
-// MARK: - Weather
 struct WeatherForecast: Codable {
     let id: Int?
     let main: MainEnum?
     let weatherDescription: Description?
     let icon: String?
+
+    enum CodingKeys: String, CodingKey {
+        case id, main
+        case weatherDescription = "description"
+        case icon
+    }
 }
 
-enum MainEnum: Codable {
-    case clear
-    case clouds
+enum MainEnum: String, Codable {
+    case clear = "Clear"
+    case clouds = "Clouds"
+    case rain = "Rain"
 }
 
-enum Description: Codable {
-    case brokenClouds
-    case clearSky
-    case fewClouds
-    case overcastClouds
-    case scatteredClouds
+enum Description: String, Codable {
+    case brokenClouds = "broken clouds"
+    case clearSky = "clear sky"
+    case fewClouds = "few clouds"
+    case lightRain = "light rain"
+    case overcastClouds = "overcast clouds"
+    case scatteredClouds = "scattered clouds"
 }
 
-// MARK: - Wind
 struct WindForecast: Codable {
     let speed: Double?
     let deg: Int?
     let gust: Double?
 }
+

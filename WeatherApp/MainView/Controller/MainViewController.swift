@@ -31,6 +31,7 @@ class MainViewController: UIViewController, UICollectionViewDelegate, UICollecti
     var longitude: CLLocationDegrees!
     
     var forecastData: [ForecastTemperature] = []
+    var currentDayTemp = ForecastTemperature(weekDay: nil, hourlyForecast: nil)
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -41,6 +42,8 @@ class MainViewController: UIViewController, UICollectionViewDelegate, UICollecti
         locationManager.desiredAccuracy = kCLLocationAccuracyKilometer
         locationManager.requestWhenInUseAuthorization()
         locationManager.startUpdatingLocation()
+        
+        loadForecast(city: UserDefaults.standard.string(forKey: "SelectedCity") ?? "")
     }
     
     func locationManager(_ manager: CLLocationManager, didUpdateLocations locations: [CLLocation]) {
@@ -64,6 +67,16 @@ class MainViewController: UIViewController, UICollectionViewDelegate, UICollecti
         networkManager.fetchCurrentWeather(city: city) { (weather) in
             DispatchQueue.main.async {
                 self.setLabels(weather: weather)
+            }
+        }
+    }
+    
+    func loadForecast(city: String) {
+        networkManager.fetchNextFiveWeatherForecast(city: city) { [weak self] (forecast) in
+            self?.forecastData = forecast
+            self?.currentDayTemp = (self?.forecastData[0])!
+            DispatchQueue.main.async {
+                self?.collectionView.reloadData()
             }
         }
     }
@@ -92,13 +105,7 @@ class MainViewController: UIViewController, UICollectionViewDelegate, UICollecti
     @IBAction func refreshButtonTapped(_ sender: Any) {
         let city = UserDefaults.standard.string(forKey: "SelectedCity") ?? ""
         loadData(city: city)
-        networkManager.fetchNextFiveWeatherForecast(city: city) { [weak self] (forecast) in
-//            self?.forecastData = forecast
-            print("\(forecast)")
-//            DispatchQueue.main.async {
-//                self.collectionView.reloadData()
-//            }
-        }
+        loadForecast(city: city)
     }
     
     @IBAction func addCityButtonPressed(_ sender: Any) {
@@ -108,8 +115,9 @@ class MainViewController: UIViewController, UICollectionViewDelegate, UICollecti
         }
         let saveAction = UIAlertAction(title: "Add", style: .default, handler: { alert -> Void in
             let firstTextField = alertController.textFields![0] as UITextField
-            guard let cityname = firstTextField.text else { return }
-            self.loadData(city: cityname)
+            guard let city = firstTextField.text else { return }
+            self.loadData(city: city)
+            self.loadForecast(city: city)
         })
         let cancelAction = UIAlertAction(title: "Cancel", style: .destructive, handler: { (action : UIAlertAction!) -> Void in
             print("Cancel")
@@ -126,11 +134,19 @@ class MainViewController: UIViewController, UICollectionViewDelegate, UICollecti
 extension MainViewController {
     
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
-        return 5
+//        if currentDayTemp.hourlyForecast?.count == 0 {
+//            return 1
+//        } else {
+            return currentDayTemp.hourlyForecast?.count ?? 0
+//    }
     }
     
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "Cell", for: indexPath) as! MainCell
+        let data = currentDayTemp.hourlyForecast![indexPath.item]
+        cell.temperatureLabel.text = data.temp.kelvinToCeliusConverter() + "º"
+        cell.timeLabel.text = data.time.correctTime()
+        cell.imageVIew.loadImageFromURL(url: "https://openweathermap.org/img/wn/\(data.icon)@2x.png")
         return cell
     }
     
