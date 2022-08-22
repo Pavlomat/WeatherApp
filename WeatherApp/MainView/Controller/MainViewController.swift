@@ -92,13 +92,13 @@ class MainViewController: UIViewController, UICollectionViewDelegate, UICollecti
     @IBAction func refreshButtonTapped(_ sender: Any) {
         let city = UserDefaults.standard.string(forKey: "SelectedCity") ?? ""
         loadData(city: city)
-//        networkManager.fetchNextFiveWeatherForecast(city: city) { (forecast) in
-//            self.forecastData = forecast
-//            print("Total Count:", forecast.count)
+        networkManager.fetchNextFiveWeatherForecast(city: city) { [weak self] (forecast) in
+//            self?.forecastData = forecast
+            print("\(forecast)")
 //            DispatchQueue.main.async {
 //                self.collectionView.reloadData()
 //            }
-//        }
+        }
     }
     
     @IBAction func addCityButtonPressed(_ sender: Any) {

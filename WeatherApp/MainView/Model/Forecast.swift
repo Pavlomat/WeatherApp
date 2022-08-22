@@ -7,57 +7,74 @@
 
 import Foundation
 
-// MARK: - Forecast
-struct Forecast: Codable {
-//    let cod: String?
-//    let message, cnt: Int?
-    let list: [List]?
-//    let city: City?
+struct DayForecast {
+    let temp: Double
+    let min_temp: Double
+    let max_temp: Double
+    let description: Description
+    let icon: String
+    let time: String
 }
 
-//// MARK: - City
-//struct City: Codable {
-//    let id: Int?
-//    let name: String?
-//    let coord: Coord?
-//    let country: String?
-//    let population, timezone, sunrise, sunset: Int?
-//}
+struct ForecastTemperature {
+    let weekDay: String?
+    let hourlyForecast: [DayForecast]?
+}
+
+// MARK: - Forecast
+struct Forecast: Codable {
+    let cod: String?
+    let message, cnt: Int?
+    let list: [List]?
+    let city: City?
+}
+
+// MARK: - City
+struct City: Codable {
+    let id: Int?
+    let name: String?
+    let coord: Coordinates?
+    let country: String?
+    let population, timezone, sunrise, sunset: Int?
+}
+
+// MARK: - Coord
+struct Coordinates: Codable {
+    let lat, lon: Double?
+}
 
 // MARK: - List
 struct List: Codable {
-//    let dt: Int?
+    let dt: Int?
     let main: MainClass?
-    let weather: [ForecastWeather]?
-//    let clouds: Clouds?
-//    let wind: Wind?
-//    let visibility, pop: Int?
-//    let sys: Sys?
+    let weather: [WeatherForecast]?
+    let clouds: CloudsForecast?
+    let wind: WindForecast?
+    let visibility, pop: Int?
+    let sys: SysForecast?
     let dtTxt: String?
+}
+
+// MARK: - Clouds
+struct CloudsForecast: Codable {
+    let all: Int?
 }
 
 // MARK: - MainClass
 struct MainClass: Codable {
-    let temp, feels_like, temp_min, temp_max: Double?
+    let temp, feelsLike, tempMin, tempMax: Double?
     let pressure, seaLevel, grndLevel, humidity: Int?
     let tempKf: Double?
-    
-//    private enum CodingKeys : String, CodingKey {
-//            case pressure, seaLevel, grndLevel, humidity, tempKf, temp, feelsLike = "feels_like", tempMin = "temp_min", tempMax = "temp_max"
-//        }
+}
+
+// MARK: - Sys
+struct SysForecast: Codable {
+    let pod: Pod?
 }
 
 enum Pod: Codable {
     case d
     case n
-}
-
-// MARK: - Weather
-struct ForecastWeather: Codable {
-    let id: Int?
-    let main: MainEnum?
-    let weatherDescription: Description?
-    let icon: Icon?
 }
 
 enum Icon: Codable {
@@ -69,25 +86,30 @@ enum Icon: Codable {
     case the04N
 }
 
+// MARK: - Weather
+struct WeatherForecast: Codable {
+    let id: Int?
+    let main: MainEnum?
+    let weatherDescription: Description?
+    let icon: String?
+}
+
 enum MainEnum: Codable {
+    case clear
     case clouds
 }
 
 enum Description: Codable {
     case brokenClouds
+    case clearSky
     case fewClouds
     case overcastClouds
     case scatteredClouds
 }
 
-struct DayForecast {
-    let mainTemp, minTemp, maxTemp: Double?
-    let descriptionTemp: Description?
-    let icon: Icon?
-    let time: String?
+// MARK: - Wind
+struct WindForecast: Codable {
+    let speed: Double?
+    let deg: Int?
+    let gust: Double?
 }
-struct ForecastTemperature {
-    let weekDay: String?
-    let hourlyForecast: [DayForecast]?
-}
-

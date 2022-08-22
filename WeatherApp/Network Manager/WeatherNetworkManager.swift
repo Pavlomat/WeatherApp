@@ -90,12 +90,12 @@ class WeatherNetworkManager : NetworkManagerProtocol {
                      for day in 0...dataCount - 1 {
                             
                         let listIndex = day//(8 * day) - 1
-                         let mainTemp = forecastWeather.list?[listIndex].main?.temp
-                         let minTemp = forecastWeather.list?[listIndex].main?.temp_min
-                         let maxTemp = forecastWeather.list?[listIndex].main?.temp_max
-                         let descriptionTemp = forecastWeather.list?[listIndex].weather?[0].weatherDescription
-                         let icon = forecastWeather.list?[listIndex].weather?[0].icon
-                         let time = forecastWeather.list?[listIndex].dtTxt
+                         guard let mainTemp = forecastWeather.list?[listIndex].main?.temp else { return }
+                         guard let minTemp = forecastWeather.list?[listIndex].main?.tempMin else { return }
+                         guard let maxTemp = forecastWeather.list?[listIndex].main?.tempMax else { return }
+                         guard let descriptionTemp = forecastWeather.list?[listIndex].weather?[0].weatherDescription else { return }
+                         guard let icon = forecastWeather.list?[listIndex].weather?[0].icon else { return }
+                         guard let time = forecastWeather.list?[listIndex].dtTxt else { return }
                     
                         let dateFormatter = DateFormatter()
                         dateFormatter.calendar = Calendar(identifier: .gregorian)
@@ -119,37 +119,37 @@ class WeatherNetworkManager : NetworkManagerProtocol {
                         
                         
                         if weekdaycomponent == currentWeekDay {
-                            let info = DayForecast(mainTemp: mainTemp, minTemp: minTemp, maxTemp: maxTemp, descriptionTemp: descriptionTemp, icon: icon, time: time)
+                            let info = DayForecast(temp: mainTemp, min_temp: minTemp, max_temp: maxTemp, description: descriptionTemp, icon: icon, time: time)
                             currentDayForecast.append(info)
                             currentDayTemp = ForecastTemperature(weekDay: currentweekdaysymbol, hourlyForecast: currentDayForecast)
                             print("1")
                             fetchedData.append(info)
-                        }else if weekdaycomponent == currentWeekDay.incrementWeekDays(by: 1) {
-                            let info = DayForecast(mainTemp: mainTemp, minTemp: minTemp, maxTemp: maxTemp, descriptionTemp: descriptionTemp, icon: icon, time: time)
+                        } else if weekdaycomponent == currentWeekDay.incrementWeekDays(by: 1) {
+                            let info = DayForecast(temp: mainTemp, min_temp: minTemp, max_temp: maxTemp, description: descriptionTemp, icon: icon, time: time)
                             secondDayForecast.append(info)
                             secondDayTemp = ForecastTemperature(weekDay: weekday, hourlyForecast: secondDayForecast)
                             print("2")
                             fetchedData.append(info)
                         }else if weekdaycomponent == currentWeekDay.incrementWeekDays(by: 2) {
-                            let info = DayForecast(mainTemp: mainTemp, minTemp: minTemp, maxTemp: maxTemp, descriptionTemp: descriptionTemp, icon: icon, time: time)
+                            let info = DayForecast(temp: mainTemp, min_temp: minTemp, max_temp: maxTemp, description: descriptionTemp, icon: icon, time: time)
                             thirddayDayForecast.append(info)
                             print("3")
                             thirdDayTemp = ForecastTemperature(weekDay: weekday, hourlyForecast: thirddayDayForecast)
                             fetchedData.append(info)
                         }else if weekdaycomponent == currentWeekDay.incrementWeekDays(by: 3) {
-                            let info = DayForecast(mainTemp: mainTemp, minTemp: minTemp, maxTemp: maxTemp, descriptionTemp: descriptionTemp, icon: icon, time: time)
+                            let info = DayForecast(temp: mainTemp, min_temp: minTemp, max_temp: maxTemp, description: descriptionTemp, icon: icon, time: time)
                             fourthDayDayForecast.append(info)
                             print("4")
                             fourthDayTemp = ForecastTemperature(weekDay: weekday, hourlyForecast: fourthDayDayForecast)
                             fetchedData.append(info)
                         }else if weekdaycomponent == currentWeekDay.incrementWeekDays(by: 4){
-                            let info = DayForecast(mainTemp: mainTemp, minTemp: minTemp, maxTemp: maxTemp, descriptionTemp: descriptionTemp, icon: icon, time: time)
+                            let info = DayForecast(temp: mainTemp, min_temp: minTemp, max_temp: maxTemp, description: descriptionTemp, icon: icon, time: time)
                             fifthDayForecast.append(info)
                             fifthDayTemp = ForecastTemperature(weekDay: weekday, hourlyForecast: fifthDayForecast)
                             fetchedData.append(info)
                             print("5")
                         }else if weekdaycomponent == currentWeekDay.incrementWeekDays(by: 5) {
-                            let info = DayForecast(mainTemp: mainTemp, minTemp: minTemp, maxTemp: maxTemp, descriptionTemp: descriptionTemp, icon: icon, time: time)
+                            let info = DayForecast(temp: mainTemp, min_temp: minTemp, max_temp: maxTemp, description: descriptionTemp, icon: icon, time: time)
                             sixthDayForecast.append(info)
                             sixthDayTemp = ForecastTemperature(weekDay: weekday, hourlyForecast: sixthDayForecast)
                             fetchedData.append(info)
