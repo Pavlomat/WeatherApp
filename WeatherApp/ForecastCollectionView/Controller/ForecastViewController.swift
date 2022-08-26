@@ -40,5 +40,4 @@ class ForecastViewController: UICollectionViewController {
         super.viewWillDisappear(animated)
         forecastData = []
     }
-
 }

@@ -80,12 +80,12 @@ class WeatherNetworkManager : NetworkManagerProtocol {
                      var fifthDayForecast : [DayForecast] = []
                     var sixthDayForecast : [DayForecast] = []
 
-                     guard let totalData = forecastWeather.list?.count else { return } //Should be 40 all the time
+                     guard let totalData = forecastWeather.list?.count else { return }
                      var dataCount = totalData
 
                      for day in 0...dataCount - 1 {
 
-                        let listIndex = day//(8 * day) - 1
+                        let listIndex = day
                          guard let mainTemp = forecastWeather.list?[listIndex].main?.temp else { return }
                          guard let minTemp = forecastWeather.list?[listIndex].main?.tempMin else { return }
                          guard let maxTemp = forecastWeather.list?[listIndex].main?.tempMax else { return }

@@ -22,17 +22,14 @@ struct Weather: Codable {
     let cod: Int?
 }
 
-// MARK: - Clouds
 struct Clouds: Codable {
     let all: Int?
 }
 
-// MARK: - Coord
 struct Coord: Codable {
     let lon, lat: Double?
 }
 
-// MARK: - Main
 struct Main: Codable {
     let temp, feelsLike, tempMin, tempMax: Double?
     let pressure, humidity: Int?
@@ -42,20 +39,17 @@ struct Main: Codable {
         }
 }
 
-// MARK: - Sys
 struct Sys: Codable {
     let type, id: Int?
     let country: String?
     let sunrise, sunset: Int?
 }
 
-// MARK: - WeatherElement
 struct WeatherElement: Codable {
     let id: Int?
     let main, weatherDescription, icon: String?
 }
 
-// MARK: - Wind
 struct Wind: Codable {
     let speed: Double?
     let deg: Int?

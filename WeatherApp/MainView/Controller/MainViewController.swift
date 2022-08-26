@@ -98,10 +98,6 @@ class MainViewController: UIViewController, UICollectionViewDelegate, UICollecti
         UserDefaults.standard.set("\(weather.name ?? "")", forKey: "SelectedCity")
     }
     
-    //    @objc func handleShowForecast() {
-    //        self.navigationController?.pushViewController(ForecastViewController(), animated: true)
-    //    }
-    
     @IBAction func refreshButtonTapped(_ sender: Any) {
         let city = UserDefaults.standard.string(forKey: "SelectedCity") ?? ""
         loadData(city: city)
@@ -134,11 +130,7 @@ class MainViewController: UIViewController, UICollectionViewDelegate, UICollecti
 extension MainViewController {
     
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
-//        if currentDayTemp.hourlyForecast?.count == 0 {
-//            return 1
-//        } else {
             return currentDayTemp.hourlyForecast?.count ?? 0
-//    }
     }
     
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {

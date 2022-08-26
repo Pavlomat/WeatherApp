@@ -21,7 +21,6 @@ struct ForecastTemperature {
     let hourlyForecast: [DayForecast]?
 }
 
-// MARK: - Forecast
 struct Forecast: Codable {
     let cod: String?
     let message, cnt: Int?
@@ -29,7 +28,6 @@ struct Forecast: Codable {
     let city: City?
 }
 
-// MARK: - City
 struct City: Codable {
     let id: Int?
     let name: String?
@@ -38,12 +36,10 @@ struct City: Codable {
     let population, timezone, sunrise, sunset: Int?
 }
 
-// MARK: - Coord
 struct Coordinates: Codable {
     let lat, lon: Double?
 }
 
-// MARK: - List
 struct List: Codable {
     let dt: Int?
     let main: MainClass?

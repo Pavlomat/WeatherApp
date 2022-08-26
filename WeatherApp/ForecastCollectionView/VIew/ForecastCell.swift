@@ -26,7 +26,6 @@ class ForecastCell: UICollectionViewCell, UICollectionViewDelegate, UICollection
     
     override func awakeFromNib() {
         super.awakeFromNib()
-        // Initialization code
         self.collectionView.dataSource = self
         self.collectionView.delegate = self
         
@@ -36,19 +35,14 @@ class ForecastCell: UICollectionViewCell, UICollectionViewDelegate, UICollection
     
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
         return dailyForecast.count
-//        return 1
     }
 
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "CVCell", for: indexPath) as! CVCell
-//        cell.configure(with: dailyForecast[indexPath.item])
         let data = dailyForecast[indexPath.item]
-
-        
         cell.temperatureLabel.text = data.temp.kelvinToCeliusConverter() + "º"
         cell.timeLabel.text = data.time.correctTime()
         cell.imageView.loadImageFromURL(url: "https://openweathermap.org/img/wn/\(data.icon)@2x.png")
-        
         return cell
     }
     
