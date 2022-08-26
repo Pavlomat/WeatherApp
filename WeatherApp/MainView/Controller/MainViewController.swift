@@ -39,11 +39,11 @@ class MainViewController: UIViewController, UICollectionViewDelegate, UICollecti
         setupView()
         
         locationManager.delegate = self
-        locationManager.desiredAccuracy = kCLLocationAccuracyKilometer
+        locationManager.desiredAccuracy = kCLLocationAccuracyThreeKilometers
         locationManager.requestWhenInUseAuthorization()
         locationManager.startUpdatingLocation()
         
-        loadForecast(city: UserDefaults.standard.string(forKey: "SelectedCity") ?? "")
+        loadForecastUsingCity(city: UserDefaults.standard.string(forKey: "SelectedCity") ?? "")
     }
     
     func locationManager(_ manager: CLLocationManager, didUpdateLocations locations: [CLLocation]) {
@@ -53,6 +53,7 @@ class MainViewController: UIViewController, UICollectionViewDelegate, UICollecti
         latitude = location.latitude
         longitude = location.longitude
         loadDataUsingCoordinates(lat: latitude.description, lon: longitude.description)
+        loadForecastUsingCoordinates(lat: latitude.description, lon: longitude.description)
     }
     
     func loadDataUsingCoordinates(lat: String, lon: String) {
@@ -63,7 +64,7 @@ class MainViewController: UIViewController, UICollectionViewDelegate, UICollecti
         }
     }
     
-    func loadData(city: String) {
+    func loadDataUsingCity(city: String) {
         networkManager.fetchCurrentWeather(city: city) { (weather) in
             DispatchQueue.main.async {
                 self.setLabels(weather: weather)
@@ -71,8 +72,18 @@ class MainViewController: UIViewController, UICollectionViewDelegate, UICollecti
         }
     }
     
-    func loadForecast(city: String) {
+    func loadForecastUsingCity(city: String) {
         networkManager.fetchNextFiveWeatherForecast(city: city) { [weak self] (forecast) in
+            self?.forecastData = forecast
+            self?.currentDayTemp = (self?.forecastData[0])!
+            DispatchQueue.main.async {
+                self?.collectionView.reloadData()
+            }
+        }
+    }
+    
+    func loadForecastUsingCoordinates(lat: String, lon: String) {
+        networkManager.fetchNextFiveWeatherForecastCoordinates(lat: lat, lon: lon) { [weak self] (forecast) in
             self?.forecastData = forecast
             self?.currentDayTemp = (self?.forecastData[0])!
             DispatchQueue.main.async {
@@ -100,8 +111,8 @@ class MainViewController: UIViewController, UICollectionViewDelegate, UICollecti
     
     @IBAction func refreshButtonTapped(_ sender: Any) {
         let city = UserDefaults.standard.string(forKey: "SelectedCity") ?? ""
-        loadData(city: city)
-        loadForecast(city: city)
+        loadDataUsingCity(city: city)
+        loadForecastUsingCity(city: city)
     }
     
     @IBAction func addCityButtonPressed(_ sender: Any) {
@@ -112,8 +123,8 @@ class MainViewController: UIViewController, UICollectionViewDelegate, UICollecti
         let saveAction = UIAlertAction(title: "Add", style: .default, handler: { alert -> Void in
             let firstTextField = alertController.textFields![0] as UITextField
             guard let city = firstTextField.text else { return }
-            self.loadData(city: city)
-            self.loadForecast(city: city)
+            self.loadDataUsingCity(city: city)
+            self.loadForecastUsingCity(city: city)
         })
         let cancelAction = UIAlertAction(title: "Cancel", style: .destructive, handler: { (action : UIAlertAction!) -> Void in
             print("Cancel")
