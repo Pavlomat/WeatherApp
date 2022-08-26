@@ -32,16 +32,13 @@ class ForecastViewController: UICollectionViewController {
         let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "Cell", for: indexPath) as! ForecastCell
         let data = forecastData[indexPath.item]
         cell.dayLabel.text = data.weekDay
-        cell.minTemperature.text = (data.hourlyForecast?[0].min_temp.kelvinToCeliusConverter() ?? "") + "º"
-        cell.maxTemperature.text = (data.hourlyForecast?[2].max_temp.kelvinToCeliusConverter() ?? "") + "º"
-        if let iconURL = data.hourlyForecast?[2].icon {
-            cell.imageView.loadImageFromURL(url: "https://openweathermap.org/img/wn/\(iconURL)@2x.png")
-        }
+        cell.configure(with: data)
         return cell
     }
-    
+
     override func viewWillDisappear(_ animated: Bool) {
         super.viewWillDisappear(animated)
         forecastData = []
     }
+
 }
