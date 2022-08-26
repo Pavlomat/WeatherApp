@@ -16,12 +16,6 @@ class ForecastCell: UICollectionViewCell, UICollectionViewDelegate, UICollection
     
     required init?(coder aDecoder: NSCoder) {
         super.init(coder: aDecoder)
-        contentView.layer.cornerRadius = 15
-        contentView.layer.borderWidth = 2
-        contentView.layer.borderColor = UIColor(red: 1, green: 1, blue: 1, alpha: 0.3).cgColor
-        
-        print("Hello")
-        print("\(dailyForecast.count)")
     }
     
     override func awakeFromNib() {

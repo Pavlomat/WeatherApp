@@ -11,7 +11,6 @@
 		BA6F6E4728A6689200DBC168 /* ForecastViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = BA6F6E4628A6689200DBC168 /* ForecastViewController.swift */; };
 		BA6F6E4928A66C4800DBC168 /* ForecastCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = BA6F6E4828A66C4800DBC168 /* ForecastCell.swift */; };
 		BA6F6E5428A675FC00DBC168 /* NetworkProperties.swift in Sources */ = {isa = PBXBuildFile; fileRef = BA6F6E5328A675FC00DBC168 /* NetworkProperties.swift */; };
-		BA6F6E5628A6760900DBC168 /* NetworkManagerProtocol.swift in Sources */ = {isa = PBXBuildFile; fileRef = BA6F6E5528A6760900DBC168 /* NetworkManagerProtocol.swift */; };
 		BA6F6E5828A6761500DBC168 /* WeatherNetworkManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = BA6F6E5728A6761500DBC168 /* WeatherNetworkManager.swift */; };
 		BA6F6E5A28A6785100DBC168 /* Weather.swift in Sources */ = {isa = PBXBuildFile; fileRef = BA6F6E5928A6785100DBC168 /* Weather.swift */; };
 		BA6F6E5C28A6785700DBC168 /* Forecast.swift in Sources */ = {isa = PBXBuildFile; fileRef = BA6F6E5B28A6785700DBC168 /* Forecast.swift */; };
@@ -32,7 +31,6 @@
 		BA6F6E4628A6689200DBC168 /* ForecastViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ForecastViewController.swift; sourceTree = "<group>"; };
 		BA6F6E4828A66C4800DBC168 /* ForecastCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ForecastCell.swift; sourceTree = "<group>"; };
 		BA6F6E5328A675FC00DBC168 /* NetworkProperties.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NetworkProperties.swift; sourceTree = "<group>"; };
-		BA6F6E5528A6760900DBC168 /* NetworkManagerProtocol.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NetworkManagerProtocol.swift; sourceTree = "<group>"; };
 		BA6F6E5728A6761500DBC168 /* WeatherNetworkManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WeatherNetworkManager.swift; sourceTree = "<group>"; };
 		BA6F6E5928A6785100DBC168 /* Weather.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Weather.swift; sourceTree = "<group>"; };
 		BA6F6E5B28A6785700DBC168 /* Forecast.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Forecast.swift; sourceTree = "<group>"; };
@@ -127,7 +125,6 @@
 			isa = PBXGroup;
 			children = (
 				BA6F6E5328A675FC00DBC168 /* NetworkProperties.swift */,
-				BA6F6E5528A6760900DBC168 /* NetworkManagerProtocol.swift */,
 				BA6F6E5728A6761500DBC168 /* WeatherNetworkManager.swift */,
 			);
 			path = "Network Manager";
@@ -258,7 +255,6 @@
 				BA6F6E4728A6689200DBC168 /* ForecastViewController.swift in Sources */,
 				BAC8FEEE28A64C9800E6EC26 /* SceneDelegate.swift in Sources */,
 				BAFC312F28AFBC3D0094CA05 /* OtherExtensions.swift in Sources */,
-				BA6F6E5628A6760900DBC168 /* NetworkManagerProtocol.swift in Sources */,
 				BA6F6E5C28A6785700DBC168 /* Forecast.swift in Sources */,
 				BA6F6E4528A660A200DBC168 /* MainCell.swift in Sources */,
 			);

@@ -322,7 +322,7 @@
                                     <autoresizingMask key="autoresizingMask"/>
                                     <subviews>
                                         <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Friday" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="AgB-GE-WIe">
-                                            <rect key="frame" x="10" y="25" width="80" height="50"/>
+                                            <rect key="frame" x="10" y="0.0" width="80" height="100"/>
                                             <constraints>
                                                 <constraint firstAttribute="width" constant="80" id="RPR-b9-TN2"/>
                                             </constraints>
@@ -331,8 +331,8 @@
                                             <nil key="highlightedColor"/>
                                         </label>
                                         <collectionView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" dataMode="prototypes" translatesAutoresizingMaskIntoConstraints="NO" id="Whz-M6-DxQ">
-                                            <rect key="frame" x="105" y="0.0" width="289" height="100"/>
-                                            <color key="backgroundColor" red="0.84912630820000001" green="0.95716417080000005" blue="1" alpha="1" colorSpace="custom" customColorSpace="displayP3"/>
+                                            <rect key="frame" x="90" y="0.0" width="304" height="100"/>
+                                            <color key="backgroundColor" red="0.77536154369999999" green="0.93008954789999998" blue="1" alpha="1" colorSpace="custom" customColorSpace="displayP3"/>
                                             <collectionViewFlowLayout key="collectionViewLayout" scrollDirection="horizontal" minimumLineSpacing="5" minimumInteritemSpacing="5" id="2aY-d8-4po">
                                                 <size key="itemSize" width="100" height="100"/>
                                                 <size key="headerReferenceSize" width="0.0" height="0.0"/>
@@ -348,7 +348,6 @@
                                                         <autoresizingMask key="autoresizingMask"/>
                                                         <color key="backgroundColor" red="0.7509120225" green="0.95716417080000005" blue="1" alpha="1" colorSpace="custom" customColorSpace="displayP3"/>
                                                     </collectionViewCellContentView>
-                                                    <color key="backgroundColor" red="0.7509120225" green="0.95716417080000005" blue="1" alpha="1" colorSpace="custom" customColorSpace="displayP3"/>
                                                     <size key="customSize" width="128" height="100"/>
                                                 </collectionViewCell>
                                             </cells>
@@ -358,18 +357,16 @@
                                             </connections>
                                         </collectionView>
                                     </subviews>
-                                    <color key="backgroundColor" red="0.84912630820000001" green="0.95716417080000005" blue="1" alpha="1" colorSpace="custom" customColorSpace="displayP3"/>
                                     <constraints>
-                                        <constraint firstItem="AgB-GE-WIe" firstAttribute="top" secondItem="gXm-OR-a4a" secondAttribute="top" constant="25" id="3PA-Cr-adY"/>
+                                        <constraint firstItem="AgB-GE-WIe" firstAttribute="top" secondItem="gXm-OR-a4a" secondAttribute="top" id="3PA-Cr-adY"/>
                                         <constraint firstItem="AgB-GE-WIe" firstAttribute="centerY" secondItem="Whz-M6-DxQ" secondAttribute="centerY" id="76L-Yv-pa0"/>
                                         <constraint firstItem="Whz-M6-DxQ" firstAttribute="top" secondItem="gXm-OR-a4a" secondAttribute="top" id="8c4-ut-rkb"/>
                                         <constraint firstAttribute="bottom" secondItem="Whz-M6-DxQ" secondAttribute="bottom" id="hdR-10-SkN"/>
-                                        <constraint firstItem="Whz-M6-DxQ" firstAttribute="leading" secondItem="AgB-GE-WIe" secondAttribute="trailing" constant="15" id="hml-Jz-0Ye"/>
+                                        <constraint firstItem="Whz-M6-DxQ" firstAttribute="leading" secondItem="AgB-GE-WIe" secondAttribute="trailing" id="hml-Jz-0Ye"/>
                                         <constraint firstItem="AgB-GE-WIe" firstAttribute="leading" secondItem="gXm-OR-a4a" secondAttribute="leading" constant="10" id="m7W-52-4Cd"/>
                                         <constraint firstAttribute="trailing" secondItem="Whz-M6-DxQ" secondAttribute="trailing" id="xVW-HY-3E1"/>
                                     </constraints>
                                 </collectionViewCellContentView>
-                                <color key="backgroundColor" red="0.84912630820000001" green="0.95716417080000005" blue="1" alpha="1" colorSpace="custom" customColorSpace="displayP3"/>
                                 <connections>
                                     <outlet property="collectionView" destination="Whz-M6-DxQ" id="fQo-v4-eqt"/>
                                     <outlet property="dayLabel" destination="AgB-GE-WIe" id="BqM-GZ-bPZ"/>
