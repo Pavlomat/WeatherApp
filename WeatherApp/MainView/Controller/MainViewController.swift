@@ -38,59 +38,55 @@ class MainViewController: UIViewController, UICollectionViewDelegate, UICollecti
         super.viewDidLoad()
         
         setupView()
-        
-//        locationManager.delegate = self
-//        locationManager.desiredAccuracy = kCLLocationAccuracyThreeKilometers
-//        locationManager.requestWhenInUseAuthorization()
-//        locationManager.startUpdatingLocation()
-        
         checkUsersLocationServicesAuthorization()
-        
-//        loadForecastUsingCity(city: UserDefaults.standard.string(forKey: "SelectedCity") ?? "")
     }
     
     func checkUsersLocationServicesAuthorization(){
-           /// Check if user has authorized Total Plus to use Location Services
         if CLLocationManager.locationServicesEnabled() {
                     switch locationManager.authorizationStatus {
                case .notDetermined:
-                   // Request when-in-use authorization initially
-                   // This is the first and the ONLY time you will be able to ask the user for permission
                    self.locationManager.delegate = self
                         locationManager.desiredAccuracy = kCLLocationAccuracyThreeKilometers
                    locationManager.requestWhenInUseAuthorization()
                    break
 
                case .restricted, .denied:
-                   // Disable location features
-//                   switchAutoTaxDetection.isOn = false
-                      
-                        print("Acess denied")
-                   let alert = UIAlertController(title: "Allow Location Access", message: "MyApp needs access to your location. Turn on Location Services in your device settings.", preferredStyle: UIAlertController.Style.alert)
-
-                   // Button to Open Settings
-                   alert.addAction(UIAlertAction(title: "Settings", style: UIAlertAction.Style.default, handler: { action in
+                        currentCityButton.isHidden = true
+                   let ac = UIAlertController(title: "Location denied", message: "App needs access to your location. Turn on Location Services in your device settings or provide city.", preferredStyle: UIAlertController.Style.alert)
+                   ac.addAction(UIAlertAction(title: "Settings", style: UIAlertAction.Style.default, handler: { action in
                        guard let settingsUrl = URL(string: UIApplication.openSettingsURLString) else {
                            return
                        }
                        if UIApplication.shared.canOpenURL(settingsUrl) {
-                           UIApplication.shared.open(settingsUrl, completionHandler: { (success) in
-                               print("Settings opened: \(success)")
-                           })
+                           UIApplication.shared.open(settingsUrl)
                        }
                    }))
-                   alert.addAction(UIAlertAction(title: "Ok", style: UIAlertAction.Style.default, handler: nil))
+                        ac.addAction(UIAlertAction(title: "Provide", style: UIAlertAction.Style.default) { [weak self] _ in
+                            let ac = UIAlertController(title: "Add City", message: "", preferredStyle: .alert)
+                            ac.addTextField { (textField : UITextField!) -> Void in
+                                textField.placeholder = "City Name"
+                            }
+                            let saveAction = UIAlertAction(title: "Add", style: .default, handler: { alert -> Void in
+                                let firstTextField = ac.textFields![0] as UITextField
+                                guard let city = firstTextField.text else { return }
+                                self?.loadDataUsingCity(city: city)
+                                self?.loadForecastUsingCity(city: city)
+                            })
+                            let cancelAction = UIAlertAction(title: "Cancel", style: .destructive, handler: { (action : UIAlertAction!) -> Void in
+                                print("Cancel")
+                            })
+                            ac.addAction(saveAction)
+                            ac.addAction(cancelAction)
+                            self?.present(ac, animated: true)
+                        })
                    DispatchQueue.main.async{
-                        self.present(alert, animated: true, completion: nil)
+                        self.present(ac, animated: true)
                    }
-
                    break
 
                case .authorizedWhenInUse, .authorizedAlways:
-                   // Enable features that require location services here.
-                   print("Full Access")
+                        currentCityButton.isHidden = false
                         guard let location = locationManager.location?.coordinate else { return }
-//                        let location = locations[0].coordinate
                         latitude = location.latitude
                         longitude = location.longitude
                         loadDataUsingCoordinates(lat: latitude.description, lon: longitude.description)
@@ -101,42 +97,6 @@ class MainViewController: UIViewController, UICollectionViewDelegate, UICollecti
                }
            }
        }
-    
-//    func locationManager(_ manager: CLLocationManager, didUpdateLocations locations: [CLLocation]) {
-//
-//        if CLLocationManager.locationServicesEnabled() {
-//            switch locationManager.authorizationStatus {
-//                case .notDetermined, .restricted, .denied:
-//                let ac = UIAlertController(title: "Location denied", message: "Provide default city", preferredStyle: .alert)
-//                ac.addTextField { (textField : UITextField!) -> Void in
-//                    textField.placeholder = "City Name"
-//                }
-//                let saveAction = UIAlertAction(title: "Provide", style: .default, handler: { alert -> Void in
-//                    let firstTextField = ac.textFields![0] as UITextField
-//                    guard let city = firstTextField.text else { return }
-//                    self.loadDataUsingCity(city: city)
-//                    self.loadForecastUsingCity(city: city)
-//                })
-//                ac.addAction(saveAction)
-//                present(ac, animated: true, completion: nil)
-//
-//                case .authorizedAlways, .authorizedWhenInUse:
-//                    print("Access")
-//                @unknown default:
-//                    break
-//            }
-//        } else {
-//            print("Location services are not enabled")
-//        }
-//
-//        manager.stopUpdatingLocation()
-//        manager.delegate = nil
-//        let location = locations[0].coordinate
-//        latitude = location.latitude
-//        longitude = location.longitude
-//        loadDataUsingCoordinates(lat: latitude.description, lon: longitude.description)
-//        loadForecastUsingCoordinates(lat: latitude.description, lon: longitude.description)
-//    }
     
     func loadDataUsingCoordinates(lat: String, lon: String) {
         networkManager.fetchCurrentLocationWeather(lat: lat, lon: lon) { (weather) in
@@ -202,26 +162,22 @@ class MainViewController: UIViewController, UICollectionViewDelegate, UICollecti
     }
     
     @IBAction func addCityButtonPressed(_ sender: Any) {
-        let alertController = UIAlertController(title: "Add City", message: "", preferredStyle: .alert)
-        alertController.addTextField { (textField : UITextField!) -> Void in
+        let ac = UIAlertController(title: "Add City", message: "", preferredStyle: .alert)
+        ac.addTextField { (textField : UITextField!) -> Void in
             textField.placeholder = "City Name"
+            
         }
-        let saveAction = UIAlertAction(title: "Add", style: .default, handler: { alert -> Void in
-            let firstTextField = alertController.textFields![0] as UITextField
+        let saveAction = UIAlertAction(title: "Add", style: .default) { [weak self] _ in
+            let firstTextField = ac.textFields![0] as UITextField
             guard let city = firstTextField.text else { return }
-            self.loadDataUsingCity(city: city)
-            self.loadForecastUsingCity(city: city)
-        })
-        let cancelAction = UIAlertAction(title: "Cancel", style: .destructive, handler: { (action : UIAlertAction!) -> Void in
-            print("Cancel")
-        })
-        
-        alertController.addAction(saveAction)
-        alertController.addAction(cancelAction)
-        
-        present(alertController, animated: true, completion: nil)
+            self?.loadDataUsingCity(city: city)
+            self?.loadForecastUsingCity(city: city)
+        }
+        let cancelAction = UIAlertAction(title: "Cancel", style: .destructive)
+        ac.addAction(saveAction)
+        ac.addAction(cancelAction)
+        present(ac, animated: true, completion: nil)
     }
-    
 }
 
 extension MainViewController {
