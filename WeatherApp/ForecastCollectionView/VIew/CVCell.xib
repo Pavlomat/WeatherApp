@@ -44,6 +44,11 @@
                 <constraint firstItem="RT6-wz-v7s" firstAttribute="leading" secondItem="gTV-IL-0wX" secondAttribute="leading" constant="5" id="spa-R4-2xa"/>
             </constraints>
             <size key="customSize" width="245" height="205"/>
+            <userDefinedRuntimeAttributes>
+                <userDefinedRuntimeAttribute type="number" keyPath="layer.cornerRadius">
+                    <integer key="value" value="15"/>
+                </userDefinedRuntimeAttribute>
+            </userDefinedRuntimeAttributes>
             <connections>
                 <outlet property="imageView" destination="ImK-rv-XSX" id="524-iu-J4r"/>
                 <outlet property="temperatureLabel" destination="59p-54-Xdc" id="oSl-JX-E1a"/>

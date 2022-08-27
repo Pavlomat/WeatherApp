@@ -20,6 +20,7 @@ class MainViewController: UIViewController, UICollectionViewDelegate, UICollecti
     @IBOutlet weak var perceivedLabel: UILabel!
     @IBOutlet weak var windLabel: UILabel!
     @IBOutlet weak var conditionsLabel: UILabel!
+    @IBOutlet weak var currentCityButton: UIButton!
     @IBOutlet weak var refreshButton: UIButton!
     @IBOutlet weak var addCityButton: UIButton!
     
@@ -38,23 +39,104 @@ class MainViewController: UIViewController, UICollectionViewDelegate, UICollecti
         
         setupView()
         
-        locationManager.delegate = self
-        locationManager.desiredAccuracy = kCLLocationAccuracyThreeKilometers
-        locationManager.requestWhenInUseAuthorization()
-        locationManager.startUpdatingLocation()
+//        locationManager.delegate = self
+//        locationManager.desiredAccuracy = kCLLocationAccuracyThreeKilometers
+//        locationManager.requestWhenInUseAuthorization()
+//        locationManager.startUpdatingLocation()
         
-        loadForecastUsingCity(city: UserDefaults.standard.string(forKey: "SelectedCity") ?? "")
+        checkUsersLocationServicesAuthorization()
+        
+//        loadForecastUsingCity(city: UserDefaults.standard.string(forKey: "SelectedCity") ?? "")
     }
     
-    func locationManager(_ manager: CLLocationManager, didUpdateLocations locations: [CLLocation]) {
-        manager.stopUpdatingLocation()
-        manager.delegate = nil
-        let location = locations[0].coordinate
-        latitude = location.latitude
-        longitude = location.longitude
-        loadDataUsingCoordinates(lat: latitude.description, lon: longitude.description)
-        loadForecastUsingCoordinates(lat: latitude.description, lon: longitude.description)
-    }
+    func checkUsersLocationServicesAuthorization(){
+           /// Check if user has authorized Total Plus to use Location Services
+        if CLLocationManager.locationServicesEnabled() {
+                    switch locationManager.authorizationStatus {
+               case .notDetermined:
+                   // Request when-in-use authorization initially
+                   // This is the first and the ONLY time you will be able to ask the user for permission
+                   self.locationManager.delegate = self
+                        locationManager.desiredAccuracy = kCLLocationAccuracyThreeKilometers
+                   locationManager.requestWhenInUseAuthorization()
+                   break
+
+               case .restricted, .denied:
+                   // Disable location features
+//                   switchAutoTaxDetection.isOn = false
+                      
+                        print("Acess denied")
+                   let alert = UIAlertController(title: "Allow Location Access", message: "MyApp needs access to your location. Turn on Location Services in your device settings.", preferredStyle: UIAlertController.Style.alert)
+
+                   // Button to Open Settings
+                   alert.addAction(UIAlertAction(title: "Settings", style: UIAlertAction.Style.default, handler: { action in
+                       guard let settingsUrl = URL(string: UIApplication.openSettingsURLString) else {
+                           return
+                       }
+                       if UIApplication.shared.canOpenURL(settingsUrl) {
+                           UIApplication.shared.open(settingsUrl, completionHandler: { (success) in
+                               print("Settings opened: \(success)")
+                           })
+                       }
+                   }))
+                   alert.addAction(UIAlertAction(title: "Ok", style: UIAlertAction.Style.default, handler: nil))
+                   DispatchQueue.main.async{
+                        self.present(alert, animated: true, completion: nil)
+                   }
+
+                   break
+
+               case .authorizedWhenInUse, .authorizedAlways:
+                   // Enable features that require location services here.
+                   print("Full Access")
+                        guard let location = locationManager.location?.coordinate else { return }
+//                        let location = locations[0].coordinate
+                        latitude = location.latitude
+                        longitude = location.longitude
+                        loadDataUsingCoordinates(lat: latitude.description, lon: longitude.description)
+                        loadForecastUsingCoordinates(lat: latitude.description, lon: longitude.description)
+                   break
+               @unknown default:
+                   fatalError()
+               }
+           }
+       }
+    
+//    func locationManager(_ manager: CLLocationManager, didUpdateLocations locations: [CLLocation]) {
+//
+//        if CLLocationManager.locationServicesEnabled() {
+//            switch locationManager.authorizationStatus {
+//                case .notDetermined, .restricted, .denied:
+//                let ac = UIAlertController(title: "Location denied", message: "Provide default city", preferredStyle: .alert)
+//                ac.addTextField { (textField : UITextField!) -> Void in
+//                    textField.placeholder = "City Name"
+//                }
+//                let saveAction = UIAlertAction(title: "Provide", style: .default, handler: { alert -> Void in
+//                    let firstTextField = ac.textFields![0] as UITextField
+//                    guard let city = firstTextField.text else { return }
+//                    self.loadDataUsingCity(city: city)
+//                    self.loadForecastUsingCity(city: city)
+//                })
+//                ac.addAction(saveAction)
+//                present(ac, animated: true, completion: nil)
+//
+//                case .authorizedAlways, .authorizedWhenInUse:
+//                    print("Access")
+//                @unknown default:
+//                    break
+//            }
+//        } else {
+//            print("Location services are not enabled")
+//        }
+//
+//        manager.stopUpdatingLocation()
+//        manager.delegate = nil
+//        let location = locations[0].coordinate
+//        latitude = location.latitude
+//        longitude = location.longitude
+//        loadDataUsingCoordinates(lat: latitude.description, lon: longitude.description)
+//        loadForecastUsingCoordinates(lat: latitude.description, lon: longitude.description)
+//    }
     
     func loadDataUsingCoordinates(lat: String, lon: String) {
         networkManager.fetchCurrentLocationWeather(lat: lat, lon: lon) { (weather) in
@@ -109,6 +191,10 @@ class MainViewController: UIViewController, UICollectionViewDelegate, UICollecti
         UserDefaults.standard.set("\(weather.name ?? "")", forKey: "SelectedCity")
     }
     
+    @IBAction func currentLocationButtonTapped(_ sender: Any) {
+        loadDataUsingCoordinates(lat: latitude.description, lon: longitude.description)
+        loadForecastUsingCoordinates(lat: latitude.description, lon: longitude.description)
+    }
     @IBAction func refreshButtonTapped(_ sender: Any) {
         let city = UserDefaults.standard.string(forKey: "SelectedCity") ?? ""
         loadDataUsingCity(city: city)
@@ -133,7 +219,7 @@ class MainViewController: UIViewController, UICollectionViewDelegate, UICollecti
         alertController.addAction(saveAction)
         alertController.addAction(cancelAction)
         
-        self.present(alertController, animated: true, completion: nil)
+        present(alertController, animated: true, completion: nil)
     }
     
 }
@@ -163,6 +249,9 @@ extension MainViewController {
         addCityButton.layer.borderWidth = 2
         addCityButton.layer.borderColor = UIColor(red: 1, green: 1, blue: 1, alpha: 0.3).cgColor
         addCityButton.layer.cornerRadius = 15
+        currentCityButton.layer.borderWidth = 2
+        currentCityButton.layer.borderColor = UIColor(red: 1, green: 1, blue: 1, alpha: 0.3).cgColor
+        currentCityButton.layer.cornerRadius = 15
     }
 }
 

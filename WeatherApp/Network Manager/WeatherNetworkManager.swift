@@ -7,7 +7,7 @@
 
 import Foundation
 
-class WeatherNetworkManager {
+class WeatherNetworkManager: NetworkManagerProtocol {
     
     func fetchCurrentLocationWeather(lat: String, lon: String, completion: @escaping (Weather) -> ()) {
         let apiURL = "https://api.openweathermap.org/data/2.5/weather?lat=\(lat)&lon=\(lon)&appid=\(NetworkProperties.API_KEY)"
