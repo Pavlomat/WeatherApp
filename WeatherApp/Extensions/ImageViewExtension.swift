@@ -35,7 +35,6 @@ extension UIImageView {
                 }
             }
         }
-        
     }
     
     func loadImageUsingCacheWithUrlString(urlString:String) {

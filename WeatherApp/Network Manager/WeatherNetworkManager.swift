@@ -48,12 +48,12 @@ class WeatherNetworkManager: NetworkManagerProtocol {
     }
     
     func createModel(urlString: String, completion: @escaping ([ForecastTemperature]) -> ()) {
-        var currentDayTemp = ForecastTemperature(weekDay: nil, hourlyForecast: nil)
-        var secondDayTemp = ForecastTemperature(weekDay: nil, hourlyForecast: nil)
-        var thirdDayTemp = ForecastTemperature(weekDay: nil, hourlyForecast: nil)
-        var fourthDayTemp = ForecastTemperature(weekDay: nil, hourlyForecast: nil)
-        var fifthDayTemp = ForecastTemperature(weekDay: nil, hourlyForecast: nil)
-        var sixthDayTemp = ForecastTemperature(weekDay: nil, hourlyForecast: nil)
+        var currentDayTemp = ForecastTemperature(weekDay: nil, hourlyForecast: nil, cityName: nil)
+        var secondDayTemp = ForecastTemperature(weekDay: nil, hourlyForecast: nil, cityName: nil)
+        var thirdDayTemp = ForecastTemperature(weekDay: nil, hourlyForecast: nil, cityName: nil)
+        var fourthDayTemp = ForecastTemperature(weekDay: nil, hourlyForecast: nil, cityName: nil)
+        var fifthDayTemp = ForecastTemperature(weekDay: nil, hourlyForecast: nil, cityName: nil)
+        var sixthDayTemp = ForecastTemperature(weekDay: nil, hourlyForecast: nil, cityName: nil)
         
         guard let url = URL(string: urlString) else {
             fatalError()
@@ -88,6 +88,7 @@ class WeatherNetworkManager: NetworkManagerProtocol {
                     guard let descriptionTemp = forecastWeather.list?[listIndex].weather?[0].weatherDescription else { return }
                     guard let icon = forecastWeather.list?[listIndex].weather?[0].icon else { return }
                     guard let time = forecastWeather.list?[listIndex].dtTxt else { return }
+                    guard let cityName = forecastWeather.city?.name else { return }
                     
                     let dateFormatter = DateFormatter()
                     dateFormatter.calendar = Calendar(identifier: .gregorian)
@@ -112,32 +113,32 @@ class WeatherNetworkManager: NetworkManagerProtocol {
                     if weekdaycomponent == currentWeekDay {
                         let info = DayForecast(temp: mainTemp, min_temp: minTemp, max_temp: maxTemp, description: descriptionTemp, icon: icon, time: time)
                         currentDayForecast.append(info)
-                        currentDayTemp = ForecastTemperature(weekDay: currentweekdaysymbol, hourlyForecast: currentDayForecast)
+                        currentDayTemp = ForecastTemperature(weekDay: currentweekdaysymbol, hourlyForecast: currentDayForecast, cityName: cityName)
                         fetchedData.append(info)
                     } else if weekdaycomponent == currentWeekDay.incrementWeekDays(by: 1) {
                         let info = DayForecast(temp: mainTemp, min_temp: minTemp, max_temp: maxTemp, description: descriptionTemp, icon: icon, time: time)
                         secondDayForecast.append(info)
-                        secondDayTemp = ForecastTemperature(weekDay: weekday, hourlyForecast: secondDayForecast)
+                        secondDayTemp = ForecastTemperature(weekDay: weekday, hourlyForecast: secondDayForecast, cityName: cityName)
                         fetchedData.append(info)
                     }else if weekdaycomponent == currentWeekDay.incrementWeekDays(by: 2) {
                         let info = DayForecast(temp: mainTemp, min_temp: minTemp, max_temp: maxTemp, description: descriptionTemp, icon: icon, time: time)
                         thirddayDayForecast.append(info)
-                        thirdDayTemp = ForecastTemperature(weekDay: weekday, hourlyForecast: thirddayDayForecast)
+                        thirdDayTemp = ForecastTemperature(weekDay: weekday, hourlyForecast: thirddayDayForecast, cityName: cityName)
                         fetchedData.append(info)
                     }else if weekdaycomponent == currentWeekDay.incrementWeekDays(by: 3) {
                         let info = DayForecast(temp: mainTemp, min_temp: minTemp, max_temp: maxTemp, description: descriptionTemp, icon: icon, time: time)
                         fourthDayDayForecast.append(info)
-                        fourthDayTemp = ForecastTemperature(weekDay: weekday, hourlyForecast: fourthDayDayForecast)
+                        fourthDayTemp = ForecastTemperature(weekDay: weekday, hourlyForecast: fourthDayDayForecast, cityName: cityName)
                         fetchedData.append(info)
                     }else if weekdaycomponent == currentWeekDay.incrementWeekDays(by: 4){
                         let info = DayForecast(temp: mainTemp, min_temp: minTemp, max_temp: maxTemp, description: descriptionTemp, icon: icon, time: time)
                         fifthDayForecast.append(info)
-                        fifthDayTemp = ForecastTemperature(weekDay: weekday, hourlyForecast: fifthDayForecast)
+                        fifthDayTemp = ForecastTemperature(weekDay: weekday, hourlyForecast: fifthDayForecast, cityName: cityName)
                         fetchedData.append(info)
                     }else if weekdaycomponent == currentWeekDay.incrementWeekDays(by: 5) {
                         let info = DayForecast(temp: mainTemp, min_temp: minTemp, max_temp: maxTemp, description: descriptionTemp, icon: icon, time: time)
                         sixthDayForecast.append(info)
-                        sixthDayTemp = ForecastTemperature(weekDay: weekday, hourlyForecast: sixthDayForecast)
+                        sixthDayTemp = ForecastTemperature(weekDay: weekday, hourlyForecast: sixthDayForecast, cityName: cityName)
                         fetchedData.append(info)
                     }
                     

@@ -32,7 +32,7 @@ class MainViewController: UIViewController, UICollectionViewDelegate, UICollecti
     var longitude: CLLocationDegrees!
     
     var forecastData: [ForecastTemperature] = []
-    var currentDayTemp = ForecastTemperature(weekDay: nil, hourlyForecast: nil)
+    var currentDayTemp = ForecastTemperature(weekDay: nil, hourlyForecast: nil, cityName: nil)
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -118,6 +118,8 @@ class MainViewController: UIViewController, UICollectionViewDelegate, UICollecti
         networkManager.fetchNextFiveWeatherForecast(city: city) { [weak self] (forecast) in
             self?.forecastData = forecast
             self?.currentDayTemp = (self?.forecastData[0])!
+            UserDefaults.standard.set("\(self?.forecastData[0].cityName ?? "")", forKey: "SelectedCity")
+//            print(self?.forecastData[0].cityName!)
             DispatchQueue.main.async {
                 self?.collectionView.reloadData()
             }
@@ -128,6 +130,8 @@ class MainViewController: UIViewController, UICollectionViewDelegate, UICollecti
         networkManager.fetchNextFiveWeatherForecastCoordinates(lat: lat, lon: lon) { [weak self] (forecast) in
             self?.forecastData = forecast
             self?.currentDayTemp = (self?.forecastData[0])!
+            UserDefaults.standard.set("\(self?.forecastData[0].cityName ?? "")", forKey: "SelectedCity")
+//            print(self?.forecastData[0].cityName!)
             DispatchQueue.main.async {
                 self?.collectionView.reloadData()
             }
@@ -165,13 +169,13 @@ class MainViewController: UIViewController, UICollectionViewDelegate, UICollecti
         let ac = UIAlertController(title: "Add City", message: "", preferredStyle: .alert)
         ac.addTextField { (textField : UITextField!) -> Void in
             textField.placeholder = "City Name"
-            
         }
         let saveAction = UIAlertAction(title: "Add", style: .default) { [weak self] _ in
             let firstTextField = ac.textFields![0] as UITextField
             guard let city = firstTextField.text else { return }
             self?.loadDataUsingCity(city: city)
             self?.loadForecastUsingCity(city: city)
+            UserDefaults.standard.set("\(city)", forKey: "SelectedCity")
         }
         let cancelAction = UIAlertAction(title: "Cancel", style: .destructive)
         ac.addAction(saveAction)

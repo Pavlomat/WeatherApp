@@ -19,6 +19,7 @@ struct DayForecast {
 struct ForecastTemperature {
     let weekDay: String?
     let hourlyForecast: [DayForecast]?
+    let cityName: String?
 }
 
 struct Forecast: Codable {

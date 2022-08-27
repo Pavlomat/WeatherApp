@@ -16,18 +16,21 @@ class ForecastViewController: UICollectionViewController {
         super.viewDidLoad()
         
         let city = UserDefaults.standard.string(forKey: "SelectedCity") ?? ""
-        networkManager.fetchNextFiveWeatherForecast(city: city) { (forecast) in
-            self.forecastData = forecast
-            DispatchQueue.main.async {
-                self.collectionView.reloadData()
+        DispatchQueue.global().async {
+            self.networkManager.fetchNextFiveWeatherForecast(city: city) { (forecast) in
+                self.forecastData = forecast
+                DispatchQueue.main.async {
+                    self.collectionView.reloadData()
+                    print("OOOOOOOOOOO: \(self.forecastData.count)")
+                }
             }
         }
     }
-
+    
     override func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
         return forecastData.count
     }
-
+    
     override func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "Cell", for: indexPath) as! ForecastCell
         let data = forecastData[indexPath.item]
@@ -35,9 +38,12 @@ class ForecastViewController: UICollectionViewController {
         cell.configure(with: data)
         return cell
     }
-
+    
     override func viewWillDisappear(_ animated: Bool) {
         super.viewWillDisappear(animated)
         forecastData = []
+        print("AAAAAAAAAAAAAAAAAAA: \(forecastData.count)")
     }
+    
+    
 }
