@@ -1,15 +1,14 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="20037" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES" initialViewController="ala-Lp-yY7">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="20037" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES" initialViewController="BYZ-38-t0r">
     <device id="retina6_1" orientation="portrait" appearance="light"/>
     <dependencies>
         <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="20020"/>
-        <capability name="Image references" minToolsVersion="12.0"/>
         <capability name="Safe area layout guides" minToolsVersion="9.0"/>
         <capability name="collection view cell content view" minToolsVersion="11.0"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
     <scenes>
-        <!--Weather-->
+        <!--Main View Controller-->
         <scene sceneID="tne-QT-ifu">
             <objects>
                 <viewController id="BYZ-38-t0r" customClass="MainViewController" customModule="WeatherApp" customModuleProvider="target" sceneMemberID="viewController">
@@ -18,7 +17,7 @@
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
                             <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="607-ar-5y7" userLabel="ContainerView">
-                                <rect key="frame" x="20" y="44" width="374" height="353.5"/>
+                                <rect key="frame" x="20" y="44" width="374" height="373.5"/>
                                 <subviews>
                                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Moscow" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" minimumFontSize="13" translatesAutoresizingMaskIntoConstraints="NO" id="QQg-TB-ZUM" userLabel="CityLabel">
                                         <rect key="frame" x="10" y="10" width="94" height="50"/>
@@ -65,7 +64,7 @@
                                         <nil key="highlightedColor"/>
                                     </label>
                                     <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" distribution="fillEqually" spacing="5" translatesAutoresizingMaskIntoConstraints="NO" id="84Z-K6-Wrg">
-                                        <rect key="frame" x="10" y="253.5" width="354" height="80"/>
+                                        <rect key="frame" x="10" y="273.5" width="354" height="80"/>
                                         <subviews>
                                             <stackView opaque="NO" contentMode="scaleToFill" distribution="fillEqually" spacing="20" translatesAutoresizingMaskIntoConstraints="NO" id="c0Z-RX-PLz">
                                                 <rect key="frame" x="0.0" y="0.0" width="354" height="23.5"/>
@@ -162,13 +161,13 @@
                                 </constraints>
                             </view>
                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Hourly" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="ZLp-Fh-OUv">
-                                <rect key="frame" x="20" y="417.5" width="50" height="20.5"/>
+                                <rect key="frame" x="20" y="437.5" width="50" height="20.5"/>
                                 <fontDescription key="fontDescription" type="system" pointSize="17"/>
                                 <nil key="textColor"/>
                                 <nil key="highlightedColor"/>
                             </label>
                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="aZH-1h-Th9">
-                                <rect key="frame" x="20" y="719" width="374" height="35"/>
+                                <rect key="frame" x="20" y="739" width="374" height="35"/>
                                 <color key="backgroundColor" red="0.84912630820000001" green="0.95716417080000005" blue="1" alpha="1" colorSpace="custom" customColorSpace="displayP3"/>
                                 <inset key="imageEdgeInsets" minX="0.0" minY="0.0" maxX="2.2250738585072014e-308" maxY="0.0"/>
                                 <state key="normal" title="Refresh">
@@ -179,7 +178,7 @@
                                 </connections>
                             </button>
                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="A1f-5a-Hr9">
-                                <rect key="frame" x="20" y="764" width="374" height="34"/>
+                                <rect key="frame" x="20" y="784" width="374" height="34"/>
                                 <color key="backgroundColor" red="0.84912630820000001" green="0.95716417080000005" blue="1" alpha="1" colorSpace="custom" customColorSpace="displayP3"/>
                                 <inset key="imageEdgeInsets" minX="0.0" minY="0.0" maxX="2.2250738585072014e-308" maxY="0.0"/>
                                 <state key="normal" title="Add city">
@@ -190,7 +189,7 @@
                                 </connections>
                             </button>
                             <collectionView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" showsHorizontalScrollIndicator="NO" showsVerticalScrollIndicator="NO" dataMode="prototypes" translatesAutoresizingMaskIntoConstraints="NO" id="gJS-BC-F6l" userLabel="CollectionView">
-                                <rect key="frame" x="20" y="448" width="374" height="206"/>
+                                <rect key="frame" x="20" y="468" width="374" height="206"/>
                                 <color key="backgroundColor" white="1" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                 <constraints>
                                     <constraint firstAttribute="height" constant="206" id="4ct-gO-UA9"/>
@@ -252,14 +251,26 @@
                                 </connections>
                             </collectionView>
                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="ppO-rf-H7a" userLabel="Current Button">
-                                <rect key="frame" x="20" y="674" width="374" height="35"/>
+                                <rect key="frame" x="20" y="694" width="374" height="35"/>
                                 <color key="backgroundColor" red="0.84912630820000001" green="0.95716417080000005" blue="1" alpha="1" colorSpace="custom" customColorSpace="displayP3"/>
                                 <inset key="imageEdgeInsets" minX="0.0" minY="0.0" maxX="2.2250738585072014e-308" maxY="0.0"/>
-                                <state key="normal" title="Current">
+                                <state key="normal" title="Current location">
                                     <color key="titleColor" white="0.0" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                 </state>
                                 <connections>
                                     <action selector="currentLocationButtonTapped:" destination="BYZ-38-t0r" eventType="touchUpInside" id="W2c-tw-fbD"/>
+                                </connections>
+                            </button>
+                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="qaA-0j-LNj" userLabel="Show Forecast">
+                                <rect key="frame" x="20" y="828" width="374" height="34"/>
+                                <color key="backgroundColor" red="0.84912630820000001" green="0.95716417080000005" blue="1" alpha="1" colorSpace="custom" customColorSpace="displayP3"/>
+                                <inset key="imageEdgeInsets" minX="0.0" minY="0.0" maxX="2.2250738585072014e-308" maxY="0.0"/>
+                                <state key="normal" title="Show forecast">
+                                    <color key="titleColor" white="0.0" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                </state>
+                                <connections>
+                                    <action selector="showFOrecastButtonTapped:" destination="BYZ-38-t0r" eventType="touchUpInside" id="tYB-qk-7vV"/>
+                                    <segue destination="FZF-cH-slp" kind="show" identifier="MainToForecastSegue" id="6qU-y5-Z0k"/>
                                 </connections>
                             </button>
                         </subviews>
@@ -274,7 +285,8 @@
                             <constraint firstItem="gJS-BC-F6l" firstAttribute="leading" secondItem="BEi-39-AAt" secondAttribute="leading" constant="20" id="IaS-bS-dmu"/>
                             <constraint firstItem="ZLp-Fh-OUv" firstAttribute="leading" secondItem="BEi-39-AAt" secondAttribute="leading" constant="20" id="LDf-UL-H3D"/>
                             <constraint firstItem="ZLp-Fh-OUv" firstAttribute="top" secondItem="607-ar-5y7" secondAttribute="bottom" constant="20" id="LHl-7P-qRE"/>
-                            <constraint firstItem="BEi-39-AAt" firstAttribute="bottom" secondItem="A1f-5a-Hr9" secondAttribute="bottom" constant="15" id="RHe-Ra-xda"/>
+                            <constraint firstItem="BEi-39-AAt" firstAttribute="trailing" secondItem="qaA-0j-LNj" secondAttribute="trailing" constant="20" id="OF9-Gk-YWc"/>
+                            <constraint firstItem="qaA-0j-LNj" firstAttribute="top" secondItem="A1f-5a-Hr9" secondAttribute="bottom" constant="10" id="RHe-Ra-xda"/>
                             <constraint firstItem="BEi-39-AAt" firstAttribute="trailing" secondItem="ppO-rf-H7a" secondAttribute="trailing" constant="20" id="TJ2-FA-R8r"/>
                             <constraint firstItem="BEi-39-AAt" firstAttribute="trailing" secondItem="gJS-BC-F6l" secondAttribute="trailing" constant="20" id="YAE-ox-Bak"/>
                             <constraint firstItem="aZH-1h-Th9" firstAttribute="leading" secondItem="BEi-39-AAt" secondAttribute="leading" constant="20" id="Z48-mn-4mg"/>
@@ -285,13 +297,12 @@
                             <constraint firstItem="BEi-39-AAt" firstAttribute="trailing" secondItem="A1f-5a-Hr9" secondAttribute="trailing" constant="20" id="eXc-hx-odw"/>
                             <constraint firstItem="A1f-5a-Hr9" firstAttribute="leading" secondItem="BEi-39-AAt" secondAttribute="leading" constant="20" id="ecs-LD-hWd"/>
                             <constraint firstItem="gJS-BC-F6l" firstAttribute="top" secondItem="ZLp-Fh-OUv" secondAttribute="bottom" constant="10" id="ieT-uV-jUu"/>
+                            <constraint firstItem="qaA-0j-LNj" firstAttribute="bottom" secondItem="BEi-39-AAt" secondAttribute="bottom" id="nDl-S7-BZA"/>
+                            <constraint firstItem="qaA-0j-LNj" firstAttribute="leading" secondItem="BEi-39-AAt" secondAttribute="leading" constant="20" id="vve-NX-aJM"/>
                             <constraint firstItem="aZH-1h-Th9" firstAttribute="height" secondItem="A1f-5a-Hr9" secondAttribute="height" multiplier="1.02941" id="xGB-GI-4sw"/>
                             <constraint firstItem="607-ar-5y7" firstAttribute="leading" secondItem="BEi-39-AAt" secondAttribute="leading" constant="20" id="zdt-pw-4MI"/>
                         </constraints>
                     </view>
-                    <tabBarItem key="tabBarItem" title="Weather" image="trash" catalog="system" id="A7m-0D-UG3">
-                        <imageReference key="selectedImage" image="trash.fill" catalog="system"/>
-                    </tabBarItem>
                     <navigationItem key="navigationItem" id="a8i-XY-RGa"/>
                     <connections>
                         <outlet property="addCityButton" destination="A1f-5a-Hr9" id="Mcf-XF-MTD"/>
@@ -305,20 +316,21 @@
                         <outlet property="mainImageView" destination="Gqw-Tx-tpq" id="LLt-cN-77U"/>
                         <outlet property="perceivedLabel" destination="7Z9-up-tyW" id="hEL-cL-CYH"/>
                         <outlet property="refreshButton" destination="aZH-1h-Th9" id="5ha-Zx-v65"/>
+                        <outlet property="showForecastButton" destination="qaA-0j-LNj" id="Tep-Gi-Bwu"/>
                         <outlet property="temperatureLabel" destination="cwV-7T-0qR" id="JeL-tf-8iM"/>
                         <outlet property="windLabel" destination="l07-Et-gfH" id="nT5-em-Fvg"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="dkx-z0-nzr" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="1839.1304347826087" y="67.633928571428569"/>
+            <point key="canvasLocation" x="2749.275362318841" y="67.633928571428569"/>
         </scene>
         <!--Forecast-->
         <scene sceneID="n0f-zY-unN">
             <objects>
                 <collectionViewController id="FZF-cH-slp" customClass="ForecastViewController" customModule="WeatherApp" customModuleProvider="target" sceneMemberID="viewController">
                     <collectionView key="view" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" showsHorizontalScrollIndicator="NO" showsVerticalScrollIndicator="NO" dataMode="prototypes" id="DlC-vL-Njb">
-                        <rect key="frame" x="0.0" y="0.0" width="414" height="896"/>
+                        <rect key="frame" x="0.0" y="0.0" width="414" height="842"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <color key="backgroundColor" red="0.77536154369999999" green="0.93008954789999998" blue="1" alpha="1" colorSpace="custom" customColorSpace="displayP3"/>
                         <collectionViewFlowLayout key="collectionViewLayout" minimumLineSpacing="10" minimumInteritemSpacing="0.0" id="BYY-sC-jnc">
@@ -393,29 +405,11 @@
                         </connections>
                     </collectionView>
                     <tabBarItem key="tabBarItem" title="Forecast" image="paperplane" catalog="system" selectedImage="paperplane.fill" id="6YA-4E-OI4"/>
+                    <navigationItem key="navigationItem" id="oq6-C1-Ipa"/>
                 </collectionViewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="ByC-RE-SgW" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="2640.579710144928" y="67.633928571428569"/>
-        </scene>
-        <!--Tab Bar Controller-->
-        <scene sceneID="6K0-I6-0wQ">
-            <objects>
-                <tabBarController automaticallyAdjustsScrollViewInsets="NO" id="ala-Lp-yY7" sceneMemberID="viewController">
-                    <toolbarItems/>
-                    <tabBar key="tabBar" contentMode="scaleToFill" insetsLayoutMarginsFromSafeArea="NO" id="jE9-C1-jPt">
-                        <rect key="frame" x="0.0" y="0.0" width="1000" height="1000"/>
-                        <autoresizingMask key="autoresizingMask"/>
-                        <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
-                    </tabBar>
-                    <connections>
-                        <segue destination="BYZ-38-t0r" kind="relationship" relationship="viewControllers" id="Nqu-vQ-IIv"/>
-                        <segue destination="FZF-cH-slp" kind="relationship" relationship="viewControllers" id="ssi-pG-Zjf"/>
-                    </connections>
-                </tabBarController>
-                <placeholder placeholderIdentifier="IBFirstResponder" id="MTd-KQ-Pos" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
-            </objects>
-            <point key="canvasLocation" x="1038" y="68"/>
+            <point key="canvasLocation" x="3550.7246376811595" y="67.633928571428569"/>
         </scene>
     </scenes>
     <resources>
@@ -423,8 +417,6 @@
         <image name="paperplane" catalog="system" width="128" height="118"/>
         <image name="paperplane.fill" catalog="system" width="128" height="118"/>
         <image name="thermometer" catalog="system" width="81" height="128"/>
-        <image name="trash" catalog="system" width="121" height="128"/>
-        <image name="trash.fill" catalog="system" width="121" height="128"/>
         <image name="wind" catalog="system" width="128" height="103"/>
     </resources>
 </document>

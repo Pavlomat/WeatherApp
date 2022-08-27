@@ -23,6 +23,7 @@ class MainViewController: UIViewController, UICollectionViewDelegate, UICollecti
     @IBOutlet weak var currentCityButton: UIButton!
     @IBOutlet weak var refreshButton: UIButton!
     @IBOutlet weak var addCityButton: UIButton!
+    @IBOutlet weak var showForecastButton: UIButton!
     
     let networkManager = WeatherNetworkManager()
     
@@ -181,6 +182,10 @@ class MainViewController: UIViewController, UICollectionViewDelegate, UICollecti
         ac.addAction(saveAction)
         ac.addAction(cancelAction)
         present(ac, animated: true, completion: nil)
+    }
+    
+    @IBAction func showFOrecastButtonTapped(_ sender: Any) {
+        performSegue(withIdentifier: "MainToForecastSegue", sender: nil)
     }
 }
 

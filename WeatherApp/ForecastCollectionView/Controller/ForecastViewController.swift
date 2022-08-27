@@ -21,7 +21,6 @@ class ForecastViewController: UICollectionViewController {
                 self.forecastData = forecast
                 DispatchQueue.main.async {
                     self.collectionView.reloadData()
-                    print("OOOOOOOOOOO: \(self.forecastData.count)")
                 }
             }
         }
@@ -42,8 +41,5 @@ class ForecastViewController: UICollectionViewController {
     override func viewWillDisappear(_ animated: Bool) {
         super.viewWillDisappear(animated)
         forecastData = []
-        print("AAAAAAAAAAAAAAAAAAA: \(forecastData.count)")
     }
-    
-    
 }
