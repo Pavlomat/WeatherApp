@@ -203,21 +203,13 @@ extension MainViewController {
     }
     
     func setupView() {
-        containerView.layer.borderWidth = 2
-        containerView.layer.borderColor = UIColor(red: 1, green: 1, blue: 1, alpha: 0.3).cgColor
-        containerView.layer.cornerRadius = 15
-        refreshButton.layer.borderWidth = 2
-        refreshButton.layer.borderColor = UIColor(red: 1, green: 1, blue: 1, alpha: 0.3).cgColor
-        refreshButton.layer.cornerRadius = 15
-        addCityButton.layer.borderWidth = 2
-        addCityButton.layer.borderColor = UIColor(red: 1, green: 1, blue: 1, alpha: 0.3).cgColor
-        addCityButton.layer.cornerRadius = 15
-        currentCityButton.layer.borderWidth = 2
-        currentCityButton.layer.borderColor = UIColor(red: 1, green: 1, blue: 1, alpha: 0.3).cgColor
-        currentCityButton.layer.cornerRadius = 15
-        showForecastButton.layer.borderWidth = 2
-        showForecastButton.layer.borderColor = UIColor(red: 1, green: 1, blue: 1, alpha: 0.3).cgColor
-        showForecastButton.layer.cornerRadius = 15
+        let outletsArray = [containerView, addCityButton, refreshButton, addCityButton, currentCityButton, showForecastButton]
+        
+        for i in outletsArray {
+            i?.layer.borderWidth = 2
+            i?.layer.borderColor = UIColor(red: 1, green: 1, blue: 1, alpha: 0.3).cgColor
+            i?.layer.cornerRadius = 15
+        }
     }
 }
 

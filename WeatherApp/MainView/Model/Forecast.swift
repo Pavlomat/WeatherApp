@@ -11,7 +11,6 @@ struct DayForecast {
     let temp: Double
     let min_temp: Double
     let max_temp: Double
-    let description: Description
     let icon: String
     let time: String
 }
