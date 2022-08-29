@@ -38,66 +38,66 @@ class MainViewController: UIViewController, UICollectionViewDelegate, UICollecti
     override func viewDidLoad() {
         super.viewDidLoad()
         
+        locationManager.delegate = self
         setupView()
-        checkUsersLocationServicesAuthorization()
     }
     
-    func checkUsersLocationServicesAuthorization(){
+    func locationManagerDidChangeAuthorization(_ manager: CLLocationManager) {
         if CLLocationManager.locationServicesEnabled() {
-                    switch locationManager.authorizationStatus {
-               case .notDetermined:
-                   self.locationManager.delegate = self
-                        locationManager.desiredAccuracy = kCLLocationAccuracyThreeKilometers
-                   locationManager.requestWhenInUseAuthorization()
-                   break
-
-               case .restricted, .denied:
-                        currentCityButton.isHidden = true
-                   let ac = UIAlertController(title: "Location denied", message: "App needs access to your location. Turn on Location Services in your device settings or provide city.", preferredStyle: UIAlertController.Style.alert)
-                   ac.addAction(UIAlertAction(title: "Settings", style: UIAlertAction.Style.default, handler: { action in
-                       guard let settingsUrl = URL(string: UIApplication.openSettingsURLString) else {
-                           return
-                       }
-                       if UIApplication.shared.canOpenURL(settingsUrl) {
-                           UIApplication.shared.open(settingsUrl)
-                       }
-                   }))
-                        ac.addAction(UIAlertAction(title: "Provide", style: UIAlertAction.Style.default) { [weak self] _ in
-                            let ac = UIAlertController(title: "Add City", message: "", preferredStyle: .alert)
-                            ac.addTextField { (textField : UITextField!) -> Void in
-                                textField.placeholder = "City Name"
-                            }
-                            let saveAction = UIAlertAction(title: "Add", style: .default, handler: { alert -> Void in
-                                let firstTextField = ac.textFields![0] as UITextField
-                                guard let city = firstTextField.text else { return }
-                                self?.loadDataUsingCity(city: city)
-                                self?.loadForecastUsingCity(city: city)
-                            })
-                            let cancelAction = UIAlertAction(title: "Cancel", style: .destructive, handler: { (action : UIAlertAction!) -> Void in
-                                print("Cancel")
-                            })
-                            ac.addAction(saveAction)
-                            ac.addAction(cancelAction)
-                            self?.present(ac, animated: true)
-                        })
-                   DispatchQueue.main.async{
-                        self.present(ac, animated: true)
-                   }
-                   break
-
-               case .authorizedWhenInUse, .authorizedAlways:
-                        currentCityButton.isHidden = false
-                        guard let location = locationManager.location?.coordinate else { return }
-                        latitude = location.latitude
-                        longitude = location.longitude
-                        loadDataUsingCoordinates(lat: latitude.description, lon: longitude.description)
-                        loadForecastUsingCoordinates(lat: latitude.description, lon: longitude.description)
-                   break
-               @unknown default:
-                   fatalError()
-               }
-           }
-       }
+            switch locationManager.authorizationStatus {
+            case .notDetermined:
+                locationManager.desiredAccuracy = kCLLocationAccuracyThreeKilometers
+                locationManager.requestWhenInUseAuthorization()
+                break
+                
+            case .restricted, .denied:
+                currentCityButton.isHidden = true
+                let ac = UIAlertController(title: "Location denied", message: "App needs access to your location. Turn on Location Services in your device settings or provide city.", preferredStyle: UIAlertController.Style.alert)
+                ac.addAction(UIAlertAction(title: "Settings", style: UIAlertAction.Style.default, handler: { action in
+                    guard let settingsUrl = URL(string: UIApplication.openSettingsURLString) else {
+                        return
+                    }
+                    if UIApplication.shared.canOpenURL(settingsUrl) {
+                        UIApplication.shared.open(settingsUrl)
+                    }
+                }))
+                ac.addAction(UIAlertAction(title: "Provide", style: UIAlertAction.Style.default) { [weak self] _ in
+                    let ac = UIAlertController(title: "Add City", message: "", preferredStyle: .alert)
+                    ac.addTextField { (textField : UITextField!) -> Void in
+                        textField.placeholder = "City Name"
+                    }
+                    let saveAction = UIAlertAction(title: "Add", style: .default, handler: { alert -> Void in
+                        let firstTextField = ac.textFields![0] as UITextField
+                        guard let city = firstTextField.text else { return }
+                        self?.loadDataUsingCity(city: city)
+                        self?.loadForecastUsingCity(city: city)
+                    })
+                    let cancelAction = UIAlertAction(title: "Cancel", style: .destructive, handler: { (action : UIAlertAction!) -> Void in
+                        print("Cancel")
+                    })
+                    ac.addAction(saveAction)
+                    ac.addAction(cancelAction)
+                    self?.present(ac, animated: true)
+                })
+                DispatchQueue.main.async{
+                    self.present(ac, animated: true)
+                }
+                break
+                
+            case .authorizedWhenInUse, .authorizedAlways:
+                   currentCityButton.isHidden = false
+                    locationManager.startUpdatingLocation()
+                    guard let location = locationManager.location?.coordinate else { return }
+                    latitude = location.latitude
+                    longitude = location.longitude
+                    loadDataUsingCoordinates(lat: latitude.description, lon: longitude.description)
+                    loadForecastUsingCoordinates(lat: latitude.description, lon: longitude.description)
+                break
+            @unknown default:
+                fatalError()
+            }
+        }
+    }
     
     func loadDataUsingCoordinates(lat: String, lon: String) {
         networkManager.fetchCurrentLocationWeather(lat: lat, lon: lon) { (weather) in
@@ -120,7 +120,6 @@ class MainViewController: UIViewController, UICollectionViewDelegate, UICollecti
             self?.forecastData = forecast
             self?.currentDayTemp = (self?.forecastData[0])!
             UserDefaults.standard.set("\(self?.forecastData[0].cityName ?? "")", forKey: "SelectedCity")
-//            print(self?.forecastData[0].cityName!)
             DispatchQueue.main.async {
                 self?.collectionView.reloadData()
             }
@@ -132,7 +131,6 @@ class MainViewController: UIViewController, UICollectionViewDelegate, UICollecti
             self?.forecastData = forecast
             self?.currentDayTemp = (self?.forecastData[0])!
             UserDefaults.standard.set("\(self?.forecastData[0].cityName ?? "")", forKey: "SelectedCity")
-//            print(self?.forecastData[0].cityName!)
             DispatchQueue.main.async {
                 self?.collectionView.reloadData()
             }
@@ -192,7 +190,7 @@ class MainViewController: UIViewController, UICollectionViewDelegate, UICollecti
 extension MainViewController {
     
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
-            return currentDayTemp.hourlyForecast?.count ?? 0
+        return currentDayTemp.hourlyForecast?.count ?? 0
     }
     
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
@@ -217,6 +215,9 @@ extension MainViewController {
         currentCityButton.layer.borderWidth = 2
         currentCityButton.layer.borderColor = UIColor(red: 1, green: 1, blue: 1, alpha: 0.3).cgColor
         currentCityButton.layer.cornerRadius = 15
+        showForecastButton.layer.borderWidth = 2
+        showForecastButton.layer.borderColor = UIColor(red: 1, green: 1, blue: 1, alpha: 0.3).cgColor
+        showForecastButton.layer.cornerRadius = 15
     }
 }
 
